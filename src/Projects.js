@@ -34,14 +34,14 @@ const projects = [
 ];
 
 // Animated illustration for empty state
-const EmptySection = ({ message, animationData }) => (
-  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem 0' }}>
-    <Suspense fallback={<div style={{height:220}} />}> {/* fallback for Lottie */}
-      <Lottie animationData={animationData} style={{ width: 220, height: 220 }} loop={true} />
-    </Suspense>
-    <p style={{ marginTop: '1.2rem', color: 'var(--color-primary)', fontWeight: 700, fontSize: '1.1rem' }}>{message}</p>
-  </div>
-);
+// const EmptySection = ({ message, animationData }) => (
+//   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem 0' }}>
+//     <Suspense fallback={<div style={{height:220}} />}> {/* fallback for Lottie */}
+//       <Lottie animationData={animationData} style={{ width: 220, height: 220 }} loop={true} />
+//     </Suspense>
+//     <p style={{ marginTop: '1.2rem', color: 'var(--color-primary)', fontWeight: 700, fontSize: '1.1rem' }}>{message}</p>
+//   </div>
+// );
 
 function Projects() {
   // Split projects into rows of 2
