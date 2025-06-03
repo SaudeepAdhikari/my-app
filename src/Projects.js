@@ -1,6 +1,5 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import './App.css';
-const Lottie = React.lazy(() => import('lottie-react'));
 
 const projects = [
   {
