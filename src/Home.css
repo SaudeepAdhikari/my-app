@@ -406,6 +406,7 @@ body.dark-mode, .app-bg.dark {
   border-radius: 0 0 24px 24px;
   backdrop-filter: blur(8px) saturate(1.2);
   -webkit-backdrop-filter: blur(8px) saturate(1.2);
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 100;

@@ -8,7 +8,7 @@ import Contact from './Contact';
 import { motion } from 'framer-motion';
 
 const Hero = () => (
-  <section id="hero" className="hero-section">
+  <section id="hero" className="hero-section" style={{overflow: 'hidden', width: '100vw', maxWidth: '100vw'}}>
     <div className="hero-overlay">
       <img
         src="/profile.jpg"
@@ -48,7 +48,8 @@ const Hero = () => (
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        width: "100%",
+        width: "100vw",
+        maxWidth: "100vw",
         height: "100%",
         position: "absolute",
         top: 0,
@@ -204,7 +205,7 @@ function App() {
         <Section className="hero-section">
           <Hero />
         </Section>
-        <Section className="about-section" id="about">
+        <Section className="about-section skills-outer-container" id="about">
           <About />
         </Section>
         <Section className="skills-outer-container" id="skills">
@@ -213,7 +214,7 @@ function App() {
         <Section className="projects-container" id="projects">
           <Projects />
         </Section>
-        <Section className="contact-outer-container" id="contact">
+        <Section className="contact-outer-container skills-outer-container projects-container" id="contact">
           <Contact />
         </Section>
       </main>
