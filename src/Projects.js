@@ -24,11 +24,11 @@ const projects = [
     tags: ['HTML', 'CSS', 'JS']
   },
   {
-    title: 'School Management System',
-    description: 'Efficient education platform serving 500+ schools across Nepal and India. Streamlines administration and enhances communication.',
-    image: '/school.png',
-    link: 'https://github.com/saudeepadhikari/school-management',
-    tags: ['React', 'Node.js', 'MongoDB']
+    title: 'Weather App',
+    description: 'A weather application that provides real-time weather updates using OpenWeatherMap API.',
+    image: '/weather.jpeg',
+    link: 'https://github.com/SaudeepAdhikari/Weather-App',
+    tags: ['React', 'API', 'CSS']
   }
 ];
 
