@@ -13,7 +13,7 @@ const projects = [
     title: 'E-Commerce Platform',
     description: 'A full-stack e-commerce platform with product management, cart, and payment integration.',
     image: '/ecommerse.jpg',
-    link: 'https://github.com/saudeepadhikari/ecommerce',
+    link: 'https://github.com/SaudeepAdhikari/E-commerce',
     tags: ['React', 'Node.js', 'MongoDB']
   },
   {
