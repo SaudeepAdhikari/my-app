@@ -45,8 +45,8 @@ function Contact() {
         <div className="popup-success-animated">
           <div className="popup-icon">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="20" fill="#14b8a6"/>
-              <path d="M12 21.5L18 27.5L28 15.5" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="20" cy="20" r="20" fill="#14b8a6" />
+              <path d="M12 21.5L18 27.5L28 15.5" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
           <div className="popup-message">Message sent successfully!</div>

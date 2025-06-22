@@ -50,7 +50,7 @@ function Projects() {
   }
 
   return (
-    <div className="projects-container">
+    <>
       <h2 className="section-title">My Projects</h2>
       <div className="projects-rows">
         {rows.map((row, rowIdx) => (
@@ -73,7 +73,7 @@ function Projects() {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
 

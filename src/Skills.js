@@ -22,7 +22,7 @@ const skills = [
 
 function Skills() {
   return (
-    <div className="skills-outer-container">
+    <>
       <h2 className="section-title">My Skills</h2>
       <div className="skills-grid-responsive">
         {skills.map((skill, idx) => (
@@ -37,7 +37,7 @@ function Skills() {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
 
