@@ -221,9 +221,9 @@ function App() {
         <div className="welcome-popup-overlay">
           <div className="welcome-popup-enhanced">
             <h2>Welcome to My Portfolio!</h2>
-            <p>This site features a dark mode and cool animations. Feel free to explore!</p>
+            <p>Discover my journey as a full stack web developer and designer. Explore projects, skills, and creative solutions that blend technology with design. Thank you for visiting—enjoy your stay!</p>
             <button className="welcome-popup-btn" onClick={() => setShowWelcome(false)}>
-              Got it!
+              Start Exploring
             </button>
           </div>
         </div>
