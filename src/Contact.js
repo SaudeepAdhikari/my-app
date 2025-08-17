@@ -1,62 +1,129 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
 import './App.css';
 
 function Contact() {
-  const form = useRef();
-  const [popup, setPopup] = useState(false);
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [sent, setSent] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const sendEmail = (e) => {
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    emailjs.sendForm(
-      'service_dvxs0i8',
-      'template_xytrhan',
-      form.current,
-      '4rIpJ1RKaBOGuKVRQ'
-    )
-      .then(
-        (result) => {
-          setPopup(true);
-          setTimeout(() => setPopup(false), 3000);
-          form.current.reset();
+    setLoading(true);
+    if (form.name && form.email && form.subject && form.message) {
+      emailjs.send(
+        'service_dvxs0i8',
+        'template_xytrhan',
+        {
+          name: form.name,
+          user_name: form.name,
+          user_email: form.email,
+          subject: form.subject,
+          message: form.message,
         },
-        (error) => {
-          setError('Failed to send message. Please try again later.');
-          console.error(error.text);
-        }
-      );
+        '4rIpJ1RKaBOGuKVRQ' // or public key
+      )
+      .then((result) => {
+        setSent(true);
+        setForm({ name: '', email: '', subject: '', message: '' });
+        setTimeout(() => setSent(false), 3000);
+      }, (error) => {
+        setError('Failed to send message. Please try again later.');
+      })
+      .finally(() => setLoading(false));
+    } else {
+      setError('Please fill in all fields.');
+      setLoading(false);
+    }
   };
 
   return (
     <div className="contact-outer-container">
       <h2 className="section-title">Contact Me</h2>
-      <form ref={form} onSubmit={sendEmail} className="contact-form-enhanced">
+      <form className="contact-form-enhanced" onSubmit={handleSubmit} autoComplete="off">
         <div className="contact-row">
-          <input type="text" name="user_name" placeholder="Your Name" required className="contact-input" />
-          <input type="email" name="user_email" placeholder="Your Email" required className="contact-input" />
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            className="contact-input"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            className="contact-input"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
         </div>
-        <input type="text" name="subject" placeholder="Subject" className="contact-input" />
-        <textarea name="message" placeholder="Your Message" required className="contact-textarea" />
-        <button type="submit" className="contact-btn">Send Message</button>
+        <input
+          type="text"
+          name="subject"
+          placeholder="Subject"
+          className="contact-input"
+          value={form.subject}
+          onChange={handleChange}
+          required
+        />
+        <textarea
+          name="message"
+          placeholder="Your Message"
+          className="contact-textarea"
+          value={form.message}
+          onChange={handleChange}
+          required
+        />
+        {error && <div className="contact-error" role="alert">{error}</div>}
+        <button type="submit" className="contact-btn" disabled={loading} style={{ opacity: loading ? 0.7 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}>
+          {loading ? (
+            <span>
+              <span className="spinner" style={{ marginRight: 8, display: 'inline-block', width: 18, height: 18, border: '2px solid #14b8a6', borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', verticalAlign: 'middle' }}></span>
+              Sending...
+            </span>
+          ) : (
+            'Send Message'
+          )}
+        </button>
+        {sent && <div className="popup-success-animated" style={{ marginTop: '1rem' }}>Message sent successfully!</div>}
       </form>
-      {popup && (
-        <div className="popup-success-animated">
-          <div className="popup-icon">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="20" fill="#14b8a6" />
-              <path d="M12 21.5L18 27.5L28 15.5" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <div className="popup-message">Message sent successfully!</div>
+      <div className="contact-info" style={{ marginTop: '2rem', textAlign: 'left' }}>
+        <div className="contact-info-item">
+          <span role="img" aria-label="email">📧</span>
+          <a href="mailto:saudeepadhikari543@gmail.com" style={{ color: '#14b8a6', fontWeight: 600, marginLeft: 8 }}>saudeepadhikari543@gmail.com</a>
         </div>
-      )}
-      {error && <div className="popup-error">{error}</div>}
-      <div className="contact-info">
-        <div className="contact-info-item"><span>📧</span> saudeepadhikari543@gmail.com</div>
-        <div className="contact-info-item"><span>📍</span> Nepal</div>
+        <div className="contact-info-item">
+          <span role="img" aria-label="location">📍</span>
+          <span style={{ color: '#ff0080', fontWeight: 600, marginLeft: 8 }}>Nepal</span>
+        </div>
       </div>
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 600px) {
+          .contact-row {
+            flex-direction: column;
+            gap: 0.7rem;
+          }
+          .contact-input, .contact-textarea {
+            width: 100%;
+            min-width: 0;
+            font-size: 1rem;
+          }
+        }
+      `}</style>
     </div>
   );
 }
