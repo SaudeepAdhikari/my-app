@@ -4,7 +4,7 @@ import parkingImg from '../assets/Parkinglogo.png';
 import weatherImg from '../assets/weather.jpeg';
 import roomFinderImg from '../assets/roomfinder.png';
 import restaurantImg from '../assets/Resturantreservation.png';
-
+import tournamentImg from '../assets/TournamentSys.png';
 export const projects = [
     {
         title: 'Portfolio Website',
@@ -47,5 +47,12 @@ export const projects = [
         image: restaurantImg,
         link: 'https://github.com/SaudeepAdhikari/Restaurant-Reservation-System',
         tags: ['React', 'Node.js', 'MongoDB']
+    },
+     {
+        title: 'Tournament Management System',
+        description: 'A Tournament Management System that helps users to manage and organize tournaments efficiently, create tie sheets, keep track of the winners.',
+        image: tournamentImg,
+        link: 'https://github.com/SaudeepAdhikari/Tournament-Management-system.git',
+        tags: ['React', 'Node.js']
     }
 ];
