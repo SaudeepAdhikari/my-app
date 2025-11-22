@@ -32,11 +32,11 @@ const About = () => {
                         {/* Stats or Highlights */}
                         <div className="w-full md:w-1/3 grid grid-cols-2 gap-4">
                             <div className="bg-white/5 p-4 rounded-xl text-center">
-                                <h3 className="text-3xl font-bold text-primary mb-1">2+</h3>
+                                <h3 className="text-3xl font-bold text-primary mb-1">1.5+</h3>
                                 <p className="text-sm text-gray-400">Years Experience</p>
                             </div>
                             <div className="bg-white/5 p-4 rounded-xl text-center">
-                                <h3 className="text-3xl font-bold text-secondary mb-1">10+</h3>
+                                <h3 className="text-3xl font-bold text-secondary mb-1">7+</h3>
                                 <p className="text-sm text-gray-400">Projects Completed</p>
                             </div>
                             <div className="bg-white/5 p-4 rounded-xl text-center col-span-2">

@@ -8,17 +8,25 @@
   body {
     @apply bg-dark text-light font-sans antialiased overflow-x-hidden selection:bg-primary selection:text-white;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading font-bold;
   }
-  
+
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
   }
+
   ::-webkit-scrollbar-track {
     @apply bg-dark;
   }
+
   ::-webkit-scrollbar-thumb {
     @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
   }
@@ -28,18 +36,23 @@
   .glass-panel {
     @apply bg-glass backdrop-blur-md border border-white/10 shadow-xl rounded-2xl;
   }
+
   .glass-nav {
     @apply bg-dark/80 backdrop-blur-lg border-b border-white/5;
   }
+
   .btn-primary {
     @apply px-6 py-3 bg-gradient-to-r from-primary to-secondary rounded-full font-semibold text-white shadow-lg hover:shadow-primary/50 transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center gap-2;
   }
+
   .btn-secondary {
     @apply px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center gap-2;
   }
+
   .section-container {
     @apply container mx-auto px-4 py-20 relative z-10;
   }
+
   .input-field {
     @apply w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors placeholder-gray-400;
   }
@@ -47,4 +60,87 @@
 
 .text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+}
+
+@layer utilities {
+  .bg-size-200 {
+    background-size: 200% 100%;
+  }
+
+  .bg-pos-0 {
+    background-position: 0% 50%;
+  }
+
+  .bg-pos-100 {
+    background-position: 100% 50%;
+  }
+}
+
+/* Accessibility Features */
+
+/* Font Size Classes */
+html.font-small {
+  font-size: 14px;
+}
+
+html.font-medium {
+  font-size: 16px;
+}
+
+html.font-large {
+  font-size: 18px;
+}
+
+html.font-xlarge {
+  font-size: 20px;
+}
+
+/* High Contrast Mode */
+html.high-contrast {
+  --color-primary: #8b5cf6;
+  --color-secondary: #ec4899;
+}
+
+html.high-contrast body {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+html.high-contrast .glass-panel {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+html.high-contrast .text-gray-400 {
+  color: #cccccc !important;
+}
+
+html.high-contrast a,
+html.high-contrast button {
+  outline: 2px solid transparent;
+}
+
+html.high-contrast a:focus,
+html.high-contrast button:focus {
+  outline: 3px solid #8b5cf6;
+  outline-offset: 2px;
+}
+
+/* Enhanced Focus Indicators */
+*:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 3px;
+}
+
+/* Keyboard Navigation Helper */
+.keyboard-nav *:focus {
+  outline: 3px solid #8b5cf6;
+  outline-offset: 3px;
 }
