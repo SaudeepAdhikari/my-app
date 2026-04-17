@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaPhp, FaDatabase, FaGitAlt, FaFigma, FaBootstrap, FaPython } from 'react-icons/fa';
-import { SiMongodb, SiTailwindcss, SiCplusplus } from 'react-icons/si';
+import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaPhp, FaDatabase, FaGitAlt, FaFigma, FaBootstrap } from 'react-icons/fa';
+import { SiMongodb, SiTailwindcss } from 'react-icons/si';
 
 const skills = [
     { name: 'HTML5', icon: <FaHtml5 />, color: '#e44d26' },
@@ -16,8 +16,6 @@ const skills = [
     { name: 'Figma', icon: <FaFigma />, color: '#a259ff' },
     { name: 'Bootstrap', icon: <FaBootstrap />, color: '#563d7c' },
     { name: 'Tailwind CSS', icon: <SiTailwindcss />, color: '#38bdf8' },
-    { name: 'Python', icon: <FaPython />, color: '#3776ab' },
-    { name: 'C++', icon: <SiCplusplus />, color: '#00599c' },
 ];
 
 const Skills = () => {

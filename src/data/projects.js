@@ -5,6 +5,7 @@ import weatherImg from '../assets/weather.jpeg';
 import roomFinderImg from '../assets/roomfinder.png';
 import restaurantImg from '../assets/Resturantreservation.png';
 import tournamentImg from '../assets/TournamentSys.png';
+import recipeImg from '../assets/recipe.png';
 export const projects = [
     {
         title: 'Portfolio Website',
@@ -53,6 +54,13 @@ export const projects = [
         description: 'A Tournament Management System that helps users to manage and organize tournaments efficiently, create tie sheets, keep track of the winners.',
         image: tournamentImg,
         link: 'https://github.com/SaudeepAdhikari/Tournament-Management-system.git',
+        tags: ['React', 'Node.js']
+    },
+     {
+        title: 'Recipe Finding System',
+        description: 'A Recipe Finding System that helps users to find recipes based on their dietary preferences and ingredients.',
+        image: recipeImg,
+        link: 'https://github.com/SaudeepAdhikari/Recipe-finding-system.git',
         tags: ['React', 'Node.js']
     }
 ];
