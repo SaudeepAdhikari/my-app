@@ -71,22 +71,35 @@ const Projects = () => {
                                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                                        <a
-                                            href={project.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="relative px-8 py-4 bg-gradient-to-r from-primary via-secondary to-primary bg-size-200 bg-pos-0 hover:bg-pos-100 rounded-full font-bold text-white shadow-2xl hover:shadow-primary/60 transition-all duration-500 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 flex items-center gap-3 overflow-hidden group/btn active:scale-95"
-                                        >
-                                            <span className="relative z-10 flex items-center gap-2">
-                                                <FaGithub className="text-xl group-hover/btn:rotate-12 transition-transform duration-300" />
-                                                View Code
-                                                <FaExternalLinkAlt className="text-sm group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-300" />
-                                            </span>
-                                            {/* Animated glow effect */}
-                                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"></div>
-                                            {/* Pulse effect */}
-                                            <div className="absolute inset-0 rounded-full bg-white/20 scale-0 group-hover/btn:scale-100 opacity-0 group-hover/btn:opacity-100 transition-all duration-500"></div>
-                                        </a>
+                                        <div className="flex flex-col sm:flex-row items-center gap-3">
+                                            {(project.liveLink || project.link) && (
+                                                <a
+                                                    href={project.liveLink || project.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="relative px-6 py-3 bg-gradient-to-r from-primary via-secondary to-primary bg-size-200 bg-pos-0 hover:bg-pos-100 rounded-full font-bold text-white shadow-2xl hover:shadow-primary/60 transition-all duration-500 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 flex items-center gap-3 overflow-hidden group/btn active:scale-95"
+                                                >
+                                                    <span className="relative z-10 flex items-center gap-2">
+                                                        <FaExternalLinkAlt className="text-sm group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-300" />
+                                                        Live Site
+                                                    </span>
+                                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"></div>
+                                                    <div className="absolute inset-0 rounded-full bg-white/20 scale-0 group-hover/btn:scale-100 opacity-0 group-hover/btn:opacity-100 transition-all duration-500"></div>
+                                                </a>
+                                            )}
+
+                                            {(project.sourceLink || (!project.liveLink && project.link)) && (
+                                                <a
+                                                    href={project.sourceLink || project.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="relative px-6 py-3 rounded-full font-bold text-white border border-white/20 bg-white/10 hover:bg-white/20 transition-all duration-500 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 flex items-center gap-2 active:scale-95"
+                                                >
+                                                    <FaGithub className="text-lg" />
+                                                    Source Code
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
 

@@ -3,11 +3,13 @@ import { motion } from 'framer-motion';
 import { FaDownload, FaEye } from 'react-icons/fa';
 
 const ResumeDownload = () => {
+    const resumePath = '/Saudeep_Adhikari_Resume_v3.pdf';
+
     const handleDownload = () => {
         // Create a link to download the resume
         const link = document.createElement('a');
-        link.href = '/resume.pdf'; // Place your resume.pdf in the public folder
-        link.download = 'Resume.pdf';
+        link.href = resumePath;
+        link.download = 'Saudeep_Adhikari_Resume.pdf';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -15,7 +17,7 @@ const ResumeDownload = () => {
 
     const handlePreview = () => {
         // Open resume in new tab
-        window.open('/resume.pdf', '_blank');
+        window.open(resumePath, '_blank');
     };
 
     return (
@@ -58,7 +60,7 @@ const ResumeDownload = () => {
                         </div>
 
                         <p className="text-xs text-gray-500 mt-6">
-                            PDF Format • Last updated November 2025
+                            PDF Format • Last updated April 2026
                         </p>
                     </div>
                 </motion.div>
