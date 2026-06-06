@@ -87,9 +87,22 @@ const Skills = () => {
             </div>
 
             {/* Marquee Rows */}
-            <div className="flex flex-col gap-4 relative z-10">
-                {row1.length > 0 && <MarqueeRow items={row1} />}
-                {row2.length > 0 && <MarqueeRow items={row2} reverse />}
+            <div className="section-container pt-0 relative z-10">
+                <div className="glass-strong rounded-[2rem] p-5 md:p-8 border border-white/5 overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.35)]">
+                    <div className="flex items-center justify-between gap-4 mb-6">
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+                            Core stack
+                        </p>
+                        <p className="text-xs text-secondary">
+                            Tools I use across design, development, and deployment
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                        {row1.length > 0 && <MarqueeRow items={row1} />}
+                        {row2.length > 0 && <MarqueeRow items={row2} reverse />}
+                    </div>
+                </div>
             </div>
 
             {/* Category pills (if available) */}

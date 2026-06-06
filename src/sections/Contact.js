@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import emailjs from 'emailjs-com';
-import { FaPaperPlane, FaEnvelope, FaMapMarkerAlt, FaLinkedin, FaGithub } from 'react-icons/fa';
+import { FaPaperPlane, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import { HiOutlineArrowRight } from 'react-icons/hi';
 import { usePortfolioData } from '../context/PortfolioDataContext';
 

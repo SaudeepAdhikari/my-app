@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { FaCheck, FaArrowRight } from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
 import { usePortfolioData } from '../context/PortfolioDataContext';
 
 // Card with mouse-tracking spotlight
