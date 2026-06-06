@@ -427,7 +427,7 @@
   "education": [
     {
       "id": 1,
-      "degree": "Bachelor of Science in Computer Science & Information Technology",
+      "degree": "Bachelor of Computer Application (BCA)",
       "school": "Tribhuvan University, Nepal",
       "period": "2022 - Present",
       "description": "Specializing in Software Architecture, Web Engineering, and Database Management Systems."
@@ -455,31 +455,6 @@
       "period": "2026-present",
       "description": "Building a Next.js 14 web application using TypeScript, Tailwind CSS, and Leaflet.js, implementing edit approval workflows, PII masking by government tier, and interactive geographic data visualization."
     }
-  ],
-  "testimonials": [
-    {
-      "id": 1,
-      "name": "Alex Johnson",
-      "role": "CTO",
-      "company": "TechStartup Inc.",
-      "avatar": "/assets/profile.jpg",
-      "quote": "Saudeep delivered an exceptional full-stack platform. His attention to detail, clean code, and proactive communication made the entire collaboration seamless and highly productive."
-    },
-    {
-      "id": 2,
-      "name": "Maria Chen",
-      "role": "Product Manager",
-      "company": "DigitalFlow",
-      "avatar": "/assets/profile.jpg",
-      "quote": "Working with Saudeep was a fantastic experience. He turned complex requirements into a polished, high-performance application — on time and above expectations."
-    },
-    {
-      "id": 3,
-      "name": "Ryan Patel",
-      "role": "Lead Engineer",
-      "company": "CloudWave",
-      "avatar": "/assets/profile.jpg",
-      "quote": "Saudeep is a rare developer who combines strong technical skills with great design sensibility. The UI he built impressed both our team and our clients."
-    }
   ]
+  
 }
