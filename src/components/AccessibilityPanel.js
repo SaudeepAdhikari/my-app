@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaUniversalAccess, FaTimes, FaFont, FaAdjust, FaKeyboard } from 'react-icons/fa';
 
@@ -7,6 +7,7 @@ const AccessibilityPanel = () => {
     const [fontSize, setFontSize] = useState('medium');
     const [highContrast, setHighContrast] = useState(false);
     const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
+    const panelRef = useRef(null);
 
     // Load preferences from localStorage
     useEffect(() => {
@@ -22,6 +23,25 @@ const AccessibilityPanel = () => {
             document.documentElement.classList.add('high-contrast');
         }
     }, []);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const handleOutsideClick = (event) => {
+            if (panelRef.current && !panelRef.current.contains(event.target)) {
+                setIsOpen(false);
+                setShowKeyboardHelp(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleOutsideClick);
+        document.addEventListener('touchstart', handleOutsideClick);
+
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+            document.removeEventListener('touchstart', handleOutsideClick);
+        };
+    }, [isOpen]);
 
     const applyFontSize = (size) => {
         const root = document.documentElement;
@@ -71,6 +91,7 @@ const AccessibilityPanel = () => {
                         exit={{ opacity: 0, x: -100 }}
                         transition={{ type: 'spring', damping: 25 }}
                         className="fixed bottom-24 left-8 z-50 w-80 glass-panel p-6"
+                        ref={panelRef}
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between mb-6">

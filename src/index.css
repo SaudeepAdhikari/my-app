@@ -81,7 +81,7 @@
 
   /* ── Section Layout ───────────────────────────── */
   .section-container {
-    @apply w-full max-w-7xl mx-auto px-6 lg:px-12 py-24 relative z-10;
+    @apply w-full max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-20 relative z-10;
   }
 
   .section-label {

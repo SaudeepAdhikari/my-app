@@ -25,19 +25,32 @@ const Navbar = () => {
 
   // Active section detection
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: '-40% 0px -55% 0px' }
-    );
-    navLinks.forEach(link => {
-      const el = document.getElementById(link.id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
+    const updateActiveSection = () => {
+      const offset = window.innerHeight * 0.35;
+      let currentSection = '';
+
+      for (const link of navLinks) {
+        const element = document.getElementById(link.id);
+        if (!element) continue;
+
+        const { top, bottom } = element.getBoundingClientRect();
+        if (top <= offset && bottom > offset) {
+          currentSection = link.id;
+          break;
+        }
+      }
+
+      setActive(currentSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    window.addEventListener('resize', updateActiveSection);
+
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection);
+      window.removeEventListener('resize', updateActiveSection);
+    };
   }, []);
 
   const scrollTo = (id) => {

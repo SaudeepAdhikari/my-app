@@ -53,7 +53,7 @@ const Resume = () => {
             <div className="glow-purple w-[500px] h-[500px] bottom-0 left-0 opacity-20" />
 
             <div className="section-container relative z-10">
-                <div className="mb-16">
+                <div className="mb-12">
                     <motion.p
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}

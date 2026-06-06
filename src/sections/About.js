@@ -12,7 +12,7 @@ const About = () => {
         <section id="about" className="relative overflow-hidden">
             <div className="glow-cyan w-[500px] h-[500px] -bottom-32 right-0 opacity-30" />
 
-            <div className="section-container relative z-10">
+            <div className="section-container pt-24 pb-12 relative z-10">
                 <div className="grid lg:grid-cols-5 gap-12 items-center">
 
                     {/* Left: bio text (3 cols) */}

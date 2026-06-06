@@ -42,9 +42,9 @@ const Stats = () => {
     if (!data || stats.length === 0) return null;
 
     return (
-        <section ref={sectionRef} className="py-4 relative overflow-hidden">
+        <section ref={sectionRef} className="py-2 relative overflow-hidden">
             <div className="glow-divider" />
-            <div className="section-container py-16">
+            <div className="section-container py-8">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     {stats.map((stat, index) => (
                         <motion.div

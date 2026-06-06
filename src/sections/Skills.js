@@ -5,14 +5,18 @@ import { getIcon } from '../utils/getIcon';
 
 // Duplicate items for seamless marquee
 const MarqueeRow = ({ items, reverse = false }) => (
-    <div className="flex overflow-hidden select-none">
-        <div
-            className="flex gap-4 shrink-0"
-            style={{
-                animation: `marquee ${reverse ? '35s' : '25s'} linear infinite ${reverse ? 'reverse' : ''}`,
+    <div className="w-full overflow-hidden select-none">
+        <motion.div
+            className="flex w-max flex-nowrap gap-4 will-change-transform"
+            animate={{ x: reverse ? ['-50%', '0%'] : ['0%', '-50%'] }}
+            transition={{
+                duration: reverse ? 28 : 22,
+                ease: 'linear',
+                repeat: Infinity,
+                repeatType: 'loop',
             }}
         >
-            {[...items, ...items, ...items].map((skill, i) => (
+            {[...items, ...items].map((skill, i) => (
                 <div
                     key={i}
                     className="flex items-center gap-3 px-5 py-3 rounded-xl shrink-0 group hover:scale-105 transition-transform duration-300 cursor-default"
@@ -33,7 +37,7 @@ const MarqueeRow = ({ items, reverse = false }) => (
                     </span>
                 </div>
             ))}
-        </div>
+        </motion.div>
     </div>
 );
 
@@ -48,11 +52,11 @@ const Skills = () => {
     const row2 = (skills || []).slice(mid);
 
     return (
-        <section id="skills" className="relative overflow-hidden py-24">
+        <section id="skills" className="relative overflow-hidden pt-0 pb-16">
             <div className="glow-cyan w-[500px] h-[500px] -top-32 right-0 opacity-30" />
 
             {/* Header */}
-            <div className="section-container pb-12 relative z-10">
+            <div className="section-container !pt-0 !pb-12 relative z-10">
                 <div className="grid md:grid-cols-2 gap-12 items-end">
                     <div>
                         <motion.p

@@ -94,7 +94,7 @@ const Services = () => {
             <div className="section-container relative z-10">
 
                 {/* Header */}
-                <div className="max-w-2xl mb-16">
+                <div className="max-w-2xl mb-12">
                     <motion.p
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}

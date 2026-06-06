@@ -52,7 +52,7 @@ const Contact = () => {
 
             <div className="section-container relative z-10">
                 {/* CTA headline */}
-                <div className="text-center mb-20">
+                <div className="text-center mb-12">
                     <motion.p
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
@@ -100,7 +100,7 @@ const Contact = () => {
                                 </span>
                             </div>
                             <p className="text-sm text-secondary leading-relaxed">
-                                Currently accepting freelance projects and full-time opportunities. My response time is usually under 24 hours.
+                                Open to new projects, collaborations, and full-time opportunities.
                             </p>
                         </div>
 
@@ -174,7 +174,7 @@ const Contact = () => {
                                         <label className="text-xs font-semibold text-secondary uppercase tracking-wider">Name</label>
                                         <input
                                             type="text" name="name" value={form.name}
-                                            onChange={handleChange} placeholder="John Doe"
+                                            onChange={handleChange}
                                             className="input-field"
                                         />
                                     </div>
@@ -182,7 +182,7 @@ const Contact = () => {
                                         <label className="text-xs font-semibold text-secondary uppercase tracking-wider">Email</label>
                                         <input
                                             type="email" name="email" value={form.email}
-                                            onChange={handleChange} placeholder="john@example.com"
+                                            onChange={handleChange}
                                             className="input-field"
                                         />
                                     </div>
@@ -192,7 +192,7 @@ const Contact = () => {
                                     <label className="text-xs font-semibold text-secondary uppercase tracking-wider">Subject</label>
                                     <input
                                         type="text" name="subject" value={form.subject}
-                                        onChange={handleChange} placeholder="How can I help?"
+                                        onChange={handleChange}
                                         className="input-field"
                                     />
                                 </div>
@@ -201,7 +201,7 @@ const Contact = () => {
                                     <label className="text-xs font-semibold text-secondary uppercase tracking-wider">Message</label>
                                     <textarea
                                         name="message" rows="5" value={form.message}
-                                        onChange={handleChange} placeholder="Tell me about your project..."
+                                        onChange={handleChange}
                                         className="input-field resize-none"
                                     />
                                 </div>

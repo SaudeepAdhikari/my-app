@@ -21,7 +21,7 @@ const Projects = () => {
 
             <div className="section-container relative z-10">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
                     <div>
                         <motion.p
                             initial={{ opacity: 0 }}
