@@ -5,98 +5,65 @@ import { usePortfolioData } from '../context/PortfolioDataContext';
 const Stats = () => {
     const { data } = usePortfolioData();
     const stats = useMemo(() => data?.stats || [], [data]);
-
     const [isVisible, setIsVisible] = useState(false);
     const [counts, setCounts] = useState(() => stats.map(() => 0));
     const sectionRef = useRef(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting && !isVisible) {
-                    setIsVisible(true);
-                }
-            },
+            ([entry]) => { if (entry.isIntersecting && !isVisible) setIsVisible(true); },
             { threshold: 0.3 }
         );
-
-        const currentSection = sectionRef.current;
-        if (currentSection) {
-            observer.observe(currentSection);
-        }
-
-        return () => {
-            if (currentSection) {
-                observer.unobserve(currentSection);
-            }
-        };
+        const el = sectionRef.current;
+        if (el) observer.observe(el);
+        return () => { if (el) observer.unobserve(el); };
     }, [isVisible]);
 
     useEffect(() => {
-        if (isVisible && stats.length > 0) {
-            stats.forEach((stat, index) => {
-                let start = 0;
-                const end = stat.value;
-                const duration = 2000; // 2 seconds
-                const increment = end / (duration / 16); // 60fps
-
-                const timer = setInterval(() => {
-                    start += increment;
-                    if (start >= end) {
-                        setCounts(prev => {
-                            const newCounts = [...prev];
-                            newCounts[index] = end;
-                            return newCounts;
-                        });
-                        clearInterval(timer);
-                    } else {
-                        setCounts(prev => {
-                            const newCounts = [...prev];
-                            newCounts[index] = Math.floor(start);
-                            return newCounts;
-                        });
-                    }
-                }, 16);
-
-                return () => clearInterval(timer);
-            });
-        }
+        if (!isVisible || stats.length === 0) return;
+        stats.forEach((stat, index) => {
+            let start = 0;
+            const end = stat.value;
+            const duration = 2000;
+            const increment = end / (duration / 16);
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= end) {
+                    setCounts(prev => { const n = [...prev]; n[index] = end; return n; });
+                    clearInterval(timer);
+                } else {
+                    setCounts(prev => { const n = [...prev]; n[index] = Math.floor(start); return n; });
+                }
+            }, 16);
+            return () => clearInterval(timer);
+        });
     }, [isVisible, stats]);
 
-    if (!data) return null;
+    if (!data || stats.length === 0) return null;
 
     return (
-        <section ref={sectionRef} className="py-16 relative">
-            <div className="container mx-auto px-4">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <section ref={sectionRef} className="py-4 relative overflow-hidden">
+            <div className="glow-divider" />
+            <div className="section-container py-16">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     {stats.map((stat, index) => (
                         <motion.div
                             key={stat.id || index}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={isVisible ? { opacity: 1, scale: 1 } : {}}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isVisible ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="text-center group"
+                            className="text-center glass rounded-2xl p-6 group hover:-translate-y-1 transition-transform"
                         >
-                            <div className="glass-panel p-6 hover:border-primary/50 transition-all duration-300">
-                                {/* Icon */}
-                                <div className="text-4xl mb-3 transform group-hover:scale-110 transition-transform duration-300">
-                                    {stat.icon}
-                                </div>
-
-                                {/* Counter */}
-                                <div className="text-4xl md:text-5xl font-bold text-gradient mb-2">
-                                    {counts[index] !== undefined ? counts[index] : 0}{stat.suffix}
-                                </div>
-
-                                {/* Label */}
-                                <div className="text-gray-400 text-sm font-medium">
-                                    {stat.label}
-                                </div>
+                            <div className="text-3xl mb-3">{stat.icon}</div>
+                            <div className="text-4xl font-heading font-black text-gradient mb-1">
+                                {counts[index] !== undefined ? counts[index] : 0}{stat.suffix}
                             </div>
+                            <div className="text-xs text-secondary uppercase tracking-wider font-medium">{stat.label}</div>
                         </motion.div>
                     ))}
                 </div>
             </div>
+            <div className="glow-divider" />
         </section>
     );
 };

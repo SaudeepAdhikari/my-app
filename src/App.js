@@ -8,6 +8,7 @@ import Resume from './sections/Resume';
 import Services from './sections/Services';
 import Projects from './sections/Projects';
 import Blog from './sections/Blog';
+import Testimonials from './sections/Testimonials';
 import Contact from './sections/Contact';
 import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
@@ -27,7 +28,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-dark text-light dark transition-colors duration-300">
+    <div className="min-h-screen bg-dark text-gray-200 dark transition-colors duration-300">
       <LoadingScreen />
       <CustomCursor />
       <ScrollProgress />
@@ -41,9 +42,10 @@ function AppContent() {
         <About />
         <Stats />
         <Skills />
-        <Resume />
         <Services />
         <Projects />
+        <Resume />
+        <Testimonials />
         <Blog />
         <ResumeDownload />
         <Contact />
@@ -63,4 +65,3 @@ function App() {
 }
 
 export default App;
-

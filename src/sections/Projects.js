@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import Tilt from 'react-parallax-tilt';
-import { FaChevronDown, FaChevronUp, FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaExternalLinkAlt, FaGithub, FaChevronDown, FaChevronUp, FaArrowRight } from 'react-icons/fa';
 import { usePortfolioData } from '../context/PortfolioDataContext';
 
 const Projects = () => {
@@ -10,116 +9,149 @@ const Projects = () => {
     const [selectedFilter, setSelectedFilter] = useState('All');
 
     if (!data) return null;
-
     const { projects } = data;
 
-    // Get all unique tags
-    const allTags = ['All', ...new Set(projects.flatMap(project => project.tags))];
-
-    // Filter projects based on selected filter
-    const filteredProjects = selectedFilter === 'All'
-        ? projects
-        : projects.filter(project => project.tags.includes(selectedFilter));
-
-    const displayedProjects = showAll ? filteredProjects : filteredProjects.slice(0, 4);
+    const allTags = ['All', ...new Set(projects.flatMap(p => p.tags))];
+    const filtered = selectedFilter === 'All' ? projects : projects.filter(p => p.tags.includes(selectedFilter));
+    const displayed = showAll ? filtered : filtered.slice(0, 4);
 
     return (
-        <section id="projects" className="section-container">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-            >
-                <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-                    Featured <span className="text-gradient">Projects</span>
-                </h2>
+        <section id="projects" className="relative overflow-hidden">
+            <div className="glow-purple w-[600px] h-[600px] -top-32 right-0 opacity-35" />
 
-                {/* Filter Buttons */}
-                <div className="flex flex-wrap justify-center gap-3 mb-12">
+            <div className="section-container relative z-10">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+                    <div>
+                        <motion.p
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            className="section-label"
+                        >
+                            <span className="w-6 h-px bg-accent inline-block" /> Portfolio
+                        </motion.p>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className="section-title text-4xl md:text-5xl"
+                        >
+                            Selected <span className="text-gradient">Projects</span>
+                        </motion.h2>
+                    </div>
+                    <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="text-secondary max-w-sm text-sm leading-relaxed"
+                    >
+                        Shipped products from concept to production — built to perform, designed to impress.
+                    </motion.p>
+                </div>
+
+                {/* Filter pills */}
+                <div className="flex flex-wrap gap-2 mb-12">
                     {allTags.map((tag) => (
-                        <motion.button
+                        <button
                             key={tag}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
                             onClick={() => setSelectedFilter(tag)}
-                            className={`px-6 py-2 rounded-full font-medium text-sm transition-all duration-300 ${selectedFilter === tag
-                                    ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/30'
-                                    : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
-                                }`}
+                            className="px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300"
+                            style={{
+                                background: selectedFilter === tag ? 'rgba(6,182,212,0.15)' : 'rgba(255,255,255,0.03)',
+                                border: selectedFilter === tag ? '1px solid rgba(6,182,212,0.4)' : '1px solid rgba(255,255,255,0.06)',
+                                color: selectedFilter === tag ? '#06b6d4' : 'rgba(156,163,175,0.8)',
+                            }}
                         >
                             {tag}
-                        </motion.button>
+                        </button>
                     ))}
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-8">
-                    {displayedProjects.map((project, index) => (
-                        <Tilt
-                            key={index}
-                            tiltMaxAngleX={5}
-                            tiltMaxAngleY={5}
-                            scale={1.02}
-                            transitionSpeed={2000}
-                            className="glass-panel overflow-hidden group"
-                        >
+                {/* Project grid */}
+                <AnimatePresence mode="popLayout">
+                    <div className="grid md:grid-cols-2 gap-6">
+                        {displayed.map((project, index) => (
                             <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.6, delay: index * 0.1 }}
+                                layout
+                                key={project.title}
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{ duration: 0.5, delay: index * 0.06 }}
+                                className="group relative rounded-2xl overflow-hidden"
+                                style={{
+                                    background: 'rgba(15,23,42,0.7)',
+                                    border: '1px solid rgba(255,255,255,0.05)',
+                                    backdropFilter: 'blur(20px)',
+                                }}
                             >
-                                <div className="relative h-64 overflow-hidden">
+                                {/* Image */}
+                                <div className="relative overflow-hidden"
+                                    style={{ aspectRatio: '16/9' }}>
                                     <img
                                         src={project.image}
                                         alt={project.title}
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                                        <div className="flex flex-col sm:flex-row items-center gap-3">
-                                            {(project.liveLink || project.link) && (
-                                                <a
-                                                    href={project.liveLink || project.link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="relative px-6 py-3 bg-gradient-to-r from-primary via-secondary to-primary bg-size-200 bg-pos-0 hover:bg-pos-100 rounded-full font-bold text-white shadow-2xl hover:shadow-primary/60 transition-all duration-500 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 flex items-center gap-3 overflow-hidden group/btn active:scale-95"
-                                                >
-                                                    <span className="relative z-10 flex items-center gap-2">
-                                                        <FaExternalLinkAlt className="text-sm group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-300" />
-                                                        Live Site
-                                                    </span>
-                                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"></div>
-                                                    <div className="absolute inset-0 rounded-full bg-white/20 scale-0 group-hover/btn:scale-100 opacity-0 group-hover/btn:opacity-100 transition-all duration-500"></div>
-                                                </a>
-                                            )}
+                                    {/* Overlay on hover */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent" />
+                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
+                                        style={{ background: 'rgba(6,182,212,0.03)' }} />
 
-                                            {(project.sourceLink || (!project.liveLink && project.link)) && (
-                                                <a
-                                                    href={project.sourceLink || project.link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="relative px-6 py-3 rounded-full font-bold text-white border border-white/20 bg-white/10 hover:bg-white/20 transition-all duration-500 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 flex items-center gap-2 active:scale-95"
-                                                >
-                                                    <FaGithub className="text-lg" />
-                                                    Source Code
-                                                </a>
-                                            )}
-                                        </div>
+                                    {/* Action buttons overlay */}
+                                    <div className="absolute top-4 right-4 flex gap-2 translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                                        {(project.sourceLink || (!project.liveLink && project.link)) && (
+                                            <a
+                                                href={project.sourceLink || project.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="w-9 h-9 rounded-xl flex items-center justify-center text-white"
+                                                style={{ background: 'rgba(3,7,18,0.9)', border: '1px solid rgba(255,255,255,0.1)' }}
+                                            >
+                                                <FaGithub size={14} />
+                                            </a>
+                                        )}
+                                        {(project.liveLink || project.link) && (
+                                            <a
+                                                href={project.liveLink || project.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="w-9 h-9 rounded-xl flex items-center justify-center text-white"
+                                                style={{ background: 'rgba(6,182,212,0.9)', border: '1px solid rgba(6,182,212,0.5)' }}
+                                            >
+                                                <FaExternalLinkAlt size={12} />
+                                            </a>
+                                        )}
                                     </div>
                                 </div>
 
+                                {/* Content */}
                                 <div className="p-6">
-                                    <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-                                        {project.title}
-                                    </h3>
-                                    <p className="text-gray-400 mb-4 text-sm line-clamp-3">
+                                    <div className="flex items-start justify-between gap-3 mb-3">
+                                        <h3 className="font-heading font-bold text-lg text-white group-hover:text-accent transition-colors duration-300">
+                                            {project.title}
+                                        </h3>
+                                        <FaArrowRight
+                                            className="text-gray-500 group-hover:text-accent group-hover:-rotate-45 transition-all duration-300 flex-shrink-0 mt-1"
+                                            size={13}
+                                        />
+                                    </div>
+                                    <p className="text-secondary text-sm leading-relaxed mb-5 line-clamp-2">
                                         {project.description}
                                     </p>
                                     <div className="flex flex-wrap gap-2">
                                         {project.tags.map((tag, i) => (
                                             <span
                                                 key={i}
-                                                className="text-xs font-medium px-3 py-1 rounded-full bg-white/5 text-gray-300 border border-white/10"
+                                                className="text-[10px] font-semibold px-2.5 py-1 rounded-full uppercase tracking-wide"
+                                                style={{
+                                                    background: 'rgba(255,255,255,0.04)',
+                                                    border: '1px solid rgba(255,255,255,0.06)',
+                                                    color: 'rgba(156,163,175,0.8)',
+                                                }}
                                             >
                                                 {tag}
                                             </span>
@@ -127,29 +159,22 @@ const Projects = () => {
                                     </div>
                                 </div>
                             </motion.div>
-                        </Tilt>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                </AnimatePresence>
 
-                {projects.length > 4 && (
+                {/* Show more */}
+                {filtered.length > 4 && (
                     <div className="text-center mt-12">
                         <button
                             onClick={() => setShowAll(!showAll)}
-                            className="px-8 py-3 rounded-full font-semibold text-white border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/50 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)] transition-all duration-300 flex items-center gap-2 mx-auto group"
+                            className="btn-secondary"
                         >
-                            {showAll ? (
-                                <>
-                                    Show Less <FaChevronUp className="group-hover:-translate-y-1 transition-transform" />
-                                </>
-                            ) : (
-                                <>
-                                    View More Projects <FaChevronDown className="group-hover:translate-y-1 transition-transform" />
-                                </>
-                            )}
+                            {showAll ? <><FaChevronUp size={12} /> Show Less</> : <><FaChevronDown size={12} /> View All ({filtered.length})</>}
                         </button>
                     </div>
                 )}
-            </motion.div>
+            </div>
         </section>
     );
 };
