@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
-import { posts } from '../data/posts';
 import { FaTimes, FaCalendar, FaTag, FaSearch } from 'react-icons/fa';
 import ShareButtons from '../components/ShareButtons';
+import { usePortfolioData } from '../context/PortfolioDataContext';
 
 const Blog = () => {
+    const { data } = usePortfolioData();
     const [selectedPost, setSelectedPost] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedTag, setSelectedTag] = useState('All');
+
+    if (!data) return null;
+
+    const { blogPosts: posts } = data;
 
     // Get all unique tags
     const allTags = ['All', ...new Set(posts.flatMap(post => post.tags))];
@@ -69,7 +74,7 @@ const Blog = () => {
                     {filteredPosts.length > 0 ? (
                         filteredPosts.map((post, index) => (
                             <motion.div
-                                key={post.id}
+                                key={post.id || index}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}

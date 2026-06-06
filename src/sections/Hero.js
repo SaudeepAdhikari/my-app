@@ -1,16 +1,22 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
-import profileImg from '../assets/profile.jpg';
 import ThreeBackground from '../components/ThreeBackground';
+import { usePortfolioData } from '../context/PortfolioDataContext';
 
 const Hero = () => {
+    const { data } = usePortfolioData();
+
+    if (!data) return null;
+
+    const { personalInfo, typewriterSequences } = data;
+
     return (
         <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
             {/* 3D Background */}
             <ThreeBackground />
 
-            {/* Background Blobs (Optional: kept for extra depth, or remove if too busy) */}
+            {/* Background Blobs */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full mix-blend-screen filter blur-3xl animate-blob"></div>
                 <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-secondary/10 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-2000"></div>
@@ -25,8 +31,8 @@ const Hero = () => {
                 >
                     <div className="w-40 h-40 md:w-48 md:h-48 rounded-full p-1 bg-gradient-to-r from-primary to-secondary relative z-10">
                         <img
-                            src={profileImg}
-                            alt="Saudeep Adhikari"
+                            src={personalInfo.profileImage}
+                            alt={personalInfo.name}
                             className="w-full h-full object-cover rounded-full border-4 border-dark transition-transform duration-500 group-hover:scale-105"
                         />
                     </div>
@@ -39,7 +45,7 @@ const Hero = () => {
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4"
                 >
-                    Hi, I'm <span className="text-gradient">Saudeep Adhikari</span>
+                    Hi, I'm <span className="text-gradient">{personalInfo.name}</span>
                 </motion.h1>
 
                 <motion.div
@@ -48,20 +54,15 @@ const Hero = () => {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className="text-xl md:text-2xl text-gray-300 mb-8 h-8"
                 >
-                    <TypeAnimation
-                        sequence={[
-                            'Full Stack Web Developer',
-                            2000,
-                            'Collaborative Team Player',
-                            2000,
-                            'Creative Problem Solver',
-                            2000,
-                        ]}
-                        wrapper="span"
-                        speed={50}
-                        repeat={Infinity}
-                        className="font-medium text-primary"
-                    />
+                    {typewriterSequences && typewriterSequences.length > 0 && (
+                        <TypeAnimation
+                            sequence={typewriterSequences}
+                            wrapper="span"
+                            speed={50}
+                            repeat={Infinity}
+                            className="font-medium text-primary"
+                        />
+                    )}
                 </motion.div>
 
                 <motion.p
@@ -70,7 +71,7 @@ const Hero = () => {
                     transition={{ duration: 0.8, delay: 0.5 }}
                     className="text-gray-400 mb-8 max-w-2xl text-lg"
                 >
-                    Crafting digital experiences that blend creativity with functionality.
+                    {personalInfo.tagline}
                 </motion.p>
 
                 <motion.div

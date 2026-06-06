@@ -1,9 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { services } from '../data/services';
 import { FaCheck } from 'react-icons/fa';
+import { usePortfolioData } from '../context/PortfolioDataContext';
 
 const Services = () => {
+    const { data } = usePortfolioData();
+
+    if (!data) return null;
+
+    const { services } = data;
+
     return (
         <section id="services" className="section-container">
             <motion.div
@@ -20,9 +26,9 @@ const Services = () => {
                 </p>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {services.map((service, index) => (
+                    {services && services.map((service, index) => (
                         <motion.div
-                            key={service.id}
+                            key={service.id || index}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -50,7 +56,7 @@ const Services = () => {
 
                                 {/* Features */}
                                 <ul className="space-y-2">
-                                    {service.features.map((feature, i) => (
+                                    {service.features && service.features.map((feature, i) => (
                                         <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
                                             <FaCheck className="text-primary mt-1 flex-shrink-0" size={12} />
                                             <span>{feature}</span>

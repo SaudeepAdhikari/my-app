@@ -1,8 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { usePortfolioData } from '../context/PortfolioDataContext';
 
 const AvailabilityBadge = () => {
-    const isAvailable = true; // Change this based on your availability
+    const { data } = usePortfolioData();
+
+    if (!data) return null;
+
+    const { availability } = data.personalInfo;
+    const isAvailable = availability.isAvailable;
 
     return (
         <motion.div
@@ -25,10 +31,14 @@ const AvailabilityBadge = () => {
                 {/* Status text */}
                 <div>
                     <div className="text-sm font-semibold text-white">
-                        {isAvailable ? 'Available for Work' : 'Currently Busy'}
+                        {isAvailable 
+                            ? (availability.statusText || 'Available for Work') 
+                            : (availability.busyText || 'Currently Busy')}
                     </div>
                     <div className="text-xs text-gray-400">
-                        {isAvailable ? 'Open to opportunities' : 'Check back later'}
+                        {isAvailable 
+                            ? (availability.statusSubtext || 'Open to opportunities') 
+                            : (availability.busySubtext || 'Check back later')}
                     </div>
                 </div>
             </div>

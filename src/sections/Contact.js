@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import emailjs from 'emailjs-com';
 import { FaPaperPlane, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { usePortfolioData } from '../context/PortfolioDataContext';
 
 const Contact = () => {
+    const { data } = usePortfolioData();
     const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
     const [status, setStatus] = useState({ type: '', message: '' });
     const [loading, setLoading] = useState(false);
+
+    if (!data) return null;
+
+    const { personalInfo } = data;
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -24,9 +30,14 @@ const Contact = () => {
         }
 
         try {
+            const emailjsConfig = personalInfo.emailjs;
+            if (!emailjsConfig || !emailjsConfig.serviceId || !emailjsConfig.templateId || !emailjsConfig.publicKey) {
+                throw new Error('EmailJS is not configured in portfolioData.json');
+            }
+
             await emailjs.send(
-                'service_dvxs0i8',
-                'template_xytrhan',
+                emailjsConfig.serviceId,
+                emailjsConfig.templateId,
                 {
                     name: form.name,
                     user_name: form.name,
@@ -34,12 +45,12 @@ const Contact = () => {
                     subject: form.subject,
                     message: form.message,
                 },
-                '4rIpJ1RKaBOGuKVRQ'
+                emailjsConfig.publicKey
             );
             setStatus({ type: 'success', message: 'Message sent successfully!' });
             setForm({ name: '', email: '', subject: '', message: '' });
         } catch (error) {
-            setStatus({ type: 'error', message: 'Failed to send message. Please try again.' });
+            setStatus({ type: 'error', message: error.message || 'Failed to send message. Please try again.' });
         } finally {
             setLoading(false);
         }
@@ -72,8 +83,8 @@ const Contact = () => {
                             </div>
                             <div>
                                 <h4 className="font-bold">Email</h4>
-                                <a href="mailto:saudeepadhikari543@gmail.com" className="text-gray-400 hover:text-primary transition-colors">
-                                    saudeepadhikari543@gmail.com
+                                <a href={`mailto:${personalInfo.email}`} className="text-gray-400 hover:text-primary transition-colors">
+                                    {personalInfo.email}
                                 </a>
                             </div>
                         </div>
@@ -84,7 +95,7 @@ const Contact = () => {
                             </div>
                             <div>
                                 <h4 className="font-bold">Location</h4>
-                                <p className="text-gray-400">Nepal</p>
+                                <p className="text-gray-400">{personalInfo.location}</p>
                             </div>
                         </div>
                     </div>

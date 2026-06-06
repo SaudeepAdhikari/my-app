@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { stats } from '../data/stats';
+import { usePortfolioData } from '../context/PortfolioDataContext';
 
 const Stats = () => {
+    const { data } = usePortfolioData();
+    const stats = useMemo(() => data?.stats || [], [data]);
+
     const [isVisible, setIsVisible] = useState(false);
-    const [counts, setCounts] = useState(stats.map(() => 0));
+    const [counts, setCounts] = useState(() => stats.map(() => 0));
     const sectionRef = useRef(null);
 
     useEffect(() => {
@@ -30,7 +33,7 @@ const Stats = () => {
     }, [isVisible]);
 
     useEffect(() => {
-        if (isVisible) {
+        if (isVisible && stats.length > 0) {
             stats.forEach((stat, index) => {
                 let start = 0;
                 const end = stat.value;
@@ -58,7 +61,9 @@ const Stats = () => {
                 return () => clearInterval(timer);
             });
         }
-    }, [isVisible]);
+    }, [isVisible, stats]);
+
+    if (!data) return null;
 
     return (
         <section ref={sectionRef} className="py-16 relative">
@@ -66,7 +71,7 @@ const Stats = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                     {stats.map((stat, index) => (
                         <motion.div
-                            key={stat.id}
+                            key={stat.id || index}
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={isVisible ? { opacity: 1, scale: 1 } : {}}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -80,7 +85,7 @@ const Stats = () => {
 
                                 {/* Counter */}
                                 <div className="text-4xl md:text-5xl font-bold text-gradient mb-2">
-                                    {counts[index]}{stat.suffix}
+                                    {counts[index] !== undefined ? counts[index] : 0}{stat.suffix}
                                 </div>
 
                                 {/* Label */}

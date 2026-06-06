@@ -1,22 +1,27 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaDownload, FaEye } from 'react-icons/fa';
+import { usePortfolioData } from '../context/PortfolioDataContext';
 
 const ResumeDownload = () => {
-    const resumePath = '/Saudeep_Adhikari_Resume_v3.pdf';
+    const { data } = usePortfolioData();
+
+    if (!data) return null;
+
+    const { personalInfo } = data;
+    const resumePath = personalInfo.resumePath;
+    const lastUpdated = personalInfo.resumeLastUpdated || 'PDF Format';
 
     const handleDownload = () => {
-        // Create a link to download the resume
         const link = document.createElement('a');
         link.href = resumePath;
-        link.download = 'Saudeep_Adhikari_Resume.pdf';
+        link.download = `${personalInfo.name.replace(/\s+/g, '_')}_Resume.pdf`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
 
     const handlePreview = () => {
-        // Open resume in new tab
         window.open(resumePath, '_blank');
     };
 
@@ -60,7 +65,7 @@ const ResumeDownload = () => {
                         </div>
 
                         <p className="text-xs text-gray-500 mt-6">
-                            PDF Format • Last updated April 2026
+                            PDF Format • {lastUpdated}
                         </p>
                     </div>
                 </motion.div>

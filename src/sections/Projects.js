@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Tilt from 'react-parallax-tilt';
 import { FaChevronDown, FaChevronUp, FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
-import { projects } from '../data/projects';
+import { usePortfolioData } from '../context/PortfolioDataContext';
 
 const Projects = () => {
+    const { data } = usePortfolioData();
     const [showAll, setShowAll] = useState(false);
     const [selectedFilter, setSelectedFilter] = useState('All');
+
+    if (!data) return null;
+
+    const { projects } = data;
 
     // Get all unique tags
     const allTags = ['All', ...new Set(projects.flatMap(project => project.tags))];

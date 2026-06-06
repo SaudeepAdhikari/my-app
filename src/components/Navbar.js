@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { usePortfolioData } from '../context/PortfolioDataContext';
 
 const Navbar = () => {
+    const { data } = usePortfolioData();
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -14,10 +16,15 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    if (!data) return null;
+
+    const { personalInfo } = data;
+
     const navLinks = [
         { name: 'Home', href: '#hero' },
         { name: 'About', href: '#about' },
         { name: 'Skills', href: '#skills' },
+        { name: 'Resume', href: '#resume' }, // Added dynamic Resume link to Navbar
         { name: 'Projects', href: '#projects' },
         { name: 'Blog', href: '#blog' },
         { name: 'Contact', href: '#contact' },
@@ -27,7 +34,7 @@ const Navbar = () => {
         <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'glass-nav py-4' : 'bg-transparent py-6'}`}>
             <div className="container mx-auto px-4 flex justify-between items-center">
                 <a href="#hero" className="text-2xl font-heading font-bold text-gradient">
-                    Saudeep
+                    {personalInfo.shortName || personalInfo.name}
                 </a>
 
                 {/* Desktop Menu */}
