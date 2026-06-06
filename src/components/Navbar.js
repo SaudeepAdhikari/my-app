@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePortfolioData } from '../context/PortfolioDataContext';
 
 const navLinks = [
+  { id: 'hero',     label: 'Home'     },
   { id: 'about',    label: 'About'    },
   { id: 'skills',   label: 'Skills'   },
   { id: 'services', label: 'Work'     },
   { id: 'projects', label: 'Projects' },
   { id: 'resume',   label: 'Resume'   },
+  { id: 'blog',     label: 'Blog'     },
   { id: 'contact',  label: 'Contact'  },
 ];
 
@@ -15,7 +17,7 @@ const Navbar = () => {
   const { data } = usePortfolioData();
   const [scrolled, setScrolled]     = useState(false);
   const [menuOpen, setMenuOpen]     = useState(false);
-  const [activeSection, setActive]  = useState('');
+  const [activeSection, setActive]  = useState('hero');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -23,20 +25,26 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Active section detection
+  // Active section detection — last section whose top has passed the scroll threshold
   useEffect(() => {
     const updateActiveSection = () => {
-      const offset = window.innerHeight * 0.35;
-      let currentSection = '';
+      const scrollY = window.scrollY;
+      const threshold = window.innerHeight * 0.3;
+
+      if (scrollY < 80) {
+        setActive('hero');
+        return;
+      }
+
+      let currentSection = navLinks[0].id;
 
       for (const link of navLinks) {
         const element = document.getElementById(link.id);
         if (!element) continue;
 
-        const { top, bottom } = element.getBoundingClientRect();
-        if (top <= offset && bottom > offset) {
+        const sectionTop = element.getBoundingClientRect().top + scrollY;
+        if (scrollY + threshold >= sectionTop) {
           currentSection = link.id;
-          break;
         }
       }
 
@@ -81,7 +89,7 @@ const Navbar = () => {
         >
           {/* Logo */}
           <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => scrollTo('hero')}
             className="flex items-center gap-2 mr-3 group"
           >
             <div className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-dark"
