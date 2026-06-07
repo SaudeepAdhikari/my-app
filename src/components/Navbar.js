@@ -92,10 +92,11 @@ const Navbar = () => {
             onClick={() => scrollTo('hero')}
             className="flex items-center gap-2 mr-3 group"
           >
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-dark"
-              style={{ background: 'linear-gradient(135deg, #06b6d4, #8b5cf6)' }}>
-              {name.charAt(0)}
-            </div>
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/browserlogo.png`}
+              alt={`${name} logo`}
+              className="w-7 h-7 rounded-lg object-cover"
+            />
             <span className="text-sm font-bold text-white hidden sm:block tracking-wide">{name}</span>
           </button>
 
