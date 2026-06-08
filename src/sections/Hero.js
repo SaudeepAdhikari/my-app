@@ -59,19 +59,7 @@ const Hero = () => {
                     {/* ─ Left: Text content ─ */}
                     <div className="flex flex-col gap-6 order-2 lg:order-1">
 
-                        {/* Status badge */}
-                        <motion.div
-                            variants={fadeUp} custom={0} initial="hidden" animate="visible"
-                            className="inline-flex items-center gap-2.5 self-start px-4 py-2 rounded-full text-xs font-semibold tracking-wide"
-                            style={{
-                                background: 'rgba(6,182,212,0.08)',
-                                border: '1px solid rgba(6,182,212,0.25)',
-                                color: '#06b6d4',
-                            }}
-                        >
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                            {personalInfo.availability?.statusText || 'Available for Work'}
-                        </motion.div>
+                        {/* Status badge removed */}
 
                         {/* Heading */}
                         <motion.h1
@@ -202,9 +190,7 @@ const Hero = () => {
                             </div>
 
                             {/* Floating accent card */}
-                            <motion.div
-                                animate={{ y: [0, -12, 0] }}
-                                transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+                            <div
                                 className="absolute -right-6 top-12 glass rounded-2xl px-4 py-3 hidden md:block"
                             >
                                 <p className="text-xs text-secondary">Open to</p>
@@ -217,36 +203,27 @@ const Hero = () => {
                                         </span>
                                     ))}
                                 </div>
-                            </motion.div>
+                            </div>
 
                             {/* Email floating chip */}
-                            <motion.a
+                            <a
                                 href={`mailto:${personalInfo.email}`}
-                                animate={{ y: [0, 12, 0] }}
-                                transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 1 }}
                                 className="absolute -left-6 bottom-24 glass rounded-2xl px-3 py-2.5 hidden md:flex items-center gap-2"
                             >
                                 <HiOutlineMail className="text-accent text-sm" />
                                 <span className="text-xs text-gray-300 font-medium">Hire me!</span>
-                            </motion.a>
+                            </a>
                         </div>
                     </motion.div>
                 </div>
 
                 {/* Scroll indicator */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 2 }}
+                <div
                     className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
                 >
                     <span className="text-[10px] text-gray-500 uppercase tracking-widest">Scroll</span>
-                    <motion.div
-                        animate={{ y: [0, 6, 0] }}
-                        transition={{ repeat: Infinity, duration: 1.5 }}
-                        className="w-[1px] h-8 bg-gradient-to-b from-accent/60 to-transparent"
-                    />
-                </motion.div>
+                    <div className="w-[1px] h-8 bg-gradient-to-b from-accent/60 to-transparent" />
+                </div>
             </div>
         </section>
         </>
