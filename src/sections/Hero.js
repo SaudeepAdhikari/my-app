@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
+import { Helmet } from 'react-helmet-async';
 import { usePortfolioData } from '../context/PortfolioDataContext';
 import { getIcon } from '../utils/getIcon';
 import { FaMapMarkerAlt, FaArrowRight, FaDownload } from 'react-icons/fa';
@@ -22,7 +23,27 @@ const Hero = () => {
     };
 
     return (
-        <section
+        <>
+            <Helmet>
+                <title>Saudeep Adhikari — Full Stack Web Developer & Designer | Portfolio</title>
+                <meta
+                    name="description"
+                    content="Saudeep Adhikari (Saudeep / Saaudeep) is a Full Stack Web Developer and Designer from Nepal. Explore my React, Node.js, and MongoDB projects, skills, resume, and contact details."
+                />
+                <meta
+                    name="keywords"
+                    content="Saudeep Adhikari, Saaudeep, Saudeep, Saudeep Adhikari portfolio, Saudeep Adhikari developer, Saudeep Adhikari Nepal, full stack developer Nepal, React developer Nepal, MERN stack developer"
+                />
+                <link rel="canonical" href="https://saudeepadhikari.com.np/" />
+                <meta property="og:title" content="Saudeep Adhikari — Full Stack Web Developer" />
+                <meta
+                    property="og:description"
+                    content="Official portfolio of Saudeep Adhikari, Full Stack Web Developer from Nepal."
+                />
+                <meta property="og:url" content="https://saudeepadhikari.com.np/" />
+                <meta property="og:type" content="website" />
+            </Helmet>
+            <section
             id="hero"
             className="relative min-h-screen flex items-center overflow-hidden"
         >
@@ -223,11 +244,12 @@ const Hero = () => {
                     <motion.div
                         animate={{ y: [0, 6, 0] }}
                         transition={{ repeat: Infinity, duration: 1.5 }}
-                        className="w-px h-8 bg-gradient-to-b from-accent/60 to-transparent"
+                        className="w-[1px] h-8 bg-gradient-to-b from-accent/60 to-transparent"
                     />
                 </motion.div>
             </div>
         </section>
+        </>
     );
 };
 

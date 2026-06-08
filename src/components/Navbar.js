@@ -76,6 +76,7 @@ const Navbar = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-5"
+        role="banner"
       >
         <nav
           className="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-500"
@@ -86,28 +87,37 @@ const Navbar = () => {
             border: scrolled ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(255,255,255,0.04)',
             boxShadow: scrolled ? '0 4px 40px rgba(0,0,0,0.4)' : 'none',
           }}
+          role="navigation"
+          aria-label="Primary navigation"
         >
           {/* Logo */}
           <button
             onClick={() => scrollTo('hero')}
             className="flex items-center gap-2 mr-3 group"
+            aria-label={`${data?.personalInfo?.name || 'Saudeep Adhikari'} — go to top`}
           >
             <img
               src={`${process.env.PUBLIC_URL}/assets/browserlogo.png`}
-              alt={`${name} logo`}
+              alt={`${data?.personalInfo?.name || 'Saudeep Adhikari'} logo`}
               className="w-7 h-7 rounded-lg object-cover"
+              width="28"
+              height="28"
+              loading="eager"
             />
             <span className="text-sm font-bold text-white hidden sm:block tracking-wide">{name}</span>
           </button>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex items-center">
+          <div className="hidden md:flex items-center" role="menubar">
             {navLinks.map((link) => (
               <button
                 key={link.id}
                 onClick={() => scrollTo(link.id)}
                 className="relative px-3 py-1.5 text-sm rounded-full transition-colors duration-200"
                 style={{ color: activeSection === link.id ? '#06b6d4' : 'rgba(255,255,255,0.6)' }}
+                role="menuitem"
+                aria-current={activeSection === link.id ? 'true' : undefined}
+                aria-label={`Go to ${link.label} section`}
               >
                 {activeSection === link.id && (
                   <motion.span

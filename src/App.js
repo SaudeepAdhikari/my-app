@@ -14,6 +14,7 @@ import ResumeDownload from './components/ResumeDownload';
 import AvailabilityBadge from './components/AvailabilityBadge';
 import AccessibilityPanel from './components/AccessibilityPanel';
 import EasterEgg from './components/EasterEgg';
+import GlobalSEO from './components/GlobalSEO';
 import { PortfolioDataProvider, usePortfolioData } from './context/PortfolioDataContext';
 
 function AppContent() {
@@ -21,13 +22,20 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-dark text-gray-200 dark transition-colors duration-300">
+      <GlobalSEO />
+      <a
+        href="#hero"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-md focus:bg-accent focus:text-white focus:text-sm focus:font-semibold"
+      >
+        Skip to main content
+      </a>
       <ScrollProgress />
       <Navbar />
       <AvailabilityBadge />
       <AccessibilityPanel />
       <EasterEgg />
 
-      <main>
+      <main id="main-content" role="main">
         <Hero />
         <About />
         <Skills />

@@ -13,15 +13,18 @@
     "framer-motion": "^12.15.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-helmet-async": "^3.0.0",
     "react-icons": "^5.5.0",
     "react-markdown": "^10.1.0",
     "react-scripts": "5.0.1",
     "react-type-animation": "^3.2.0",
     "web-vitals": "^2.1.4"
   },
+  "homepage": "https://saudeepadhikari.com.np",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "react-snap",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "npm run build && wrangler pages deploy build --env production"
@@ -47,6 +50,13 @@
   "devDependencies": {
     "autoprefixer": "^10.4.22",
     "postcss": "^8.5.6",
+    "react-snap": "^1.23.0",
     "tailwindcss": "^3.4.1"
+  }
+  ,
+  "reactSnap": {
+    "include": ["/"],
+    "minifyHtml": true,
+    "inlineCss": true
   }
 }

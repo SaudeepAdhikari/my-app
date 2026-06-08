@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { FaExternalLinkAlt, FaGithub, FaChevronDown, FaChevronUp, FaCheck } from 'react-icons/fa';
 import { usePortfolioData } from '../context/PortfolioDataContext';
 
@@ -124,10 +125,13 @@ const ProjectCard = ({ project, index, isExpanded, onToggle }) => {
             <div className="relative aspect-[4/3] overflow-hidden">
                 <img
                     src={project.image}
-                    alt={project.title}
+                    alt={`${project.title} — ${project.description}`}
                     className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 project-image-grade ${
                         isActive ? 'scale-[1.05]' : 'scale-100'
                     }`}
+                    loading="lazy"
+                    width="1600"
+                    height="1200"
                 />
 
                 <div
@@ -314,8 +318,26 @@ const Projects = () => {
         setExpandedCard((prev) => (prev === title ? null : title));
     };
 
+    // Build ItemList structured data for projects (helps search engines understand the portfolio list)
+    const SITE_URL = 'https://saudeepadhikari.com.np';
+    const itemList = sorted.map((p, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: p.title,
+        url: p.demo || p.github || `${SITE_URL}/#projects`
+    }));
+
     return (
         <section id="projects" className="relative overflow-hidden" ref={sectionRef}>
+            <Helmet>
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'ItemList',
+                        itemListElement: itemList
+                    })}
+                </script>
+            </Helmet>
             <div className="absolute inset-0 pointer-events-none">
                 <div className="glow-purple w-[600px] h-[600px] -top-32 right-0 opacity-35" />
                 <div className="glow-cyan w-[450px] h-[450px] bottom-0 left-[-80px] opacity-25" />

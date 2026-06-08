@@ -2,74 +2,245 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="/browserlogo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <!-- SEO Meta Tags -->
-    <title>Saudeep Adhikari | Portfolio |</title>
-    <meta name="description" content="Saudeep Adhikari's modern, responsive portfolio. Full Stack Developer specializing in React, Node.js, and modern web technologies. Projects, skills, and contact." />
-    <meta name="keywords" content="Saudeep Adhikari, portfolio, web developer, full stack, React, Node.js, JavaScript, projects, resume" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" href="%PUBLIC_URL%/assets/browserlogo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#030712" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- =========================================================
+         PRIMARY SEO META TAGS
+         ========================================================= -->
+    <title>Saudeep Adhikari — Full Stack Web Developer & Designer | Portfolio</title>
+    <meta
+      name="title"
+      content="Saudeep Adhikari — Full Stack Web Developer & Designer | Portfolio"
+    />
+    <meta
+      name="description"
+      content="Saudeep Adhikari (also Saaudeep) is a Full Stack Web Developer and Designer from Nepal specializing in React, Node.js, MongoDB, and modern web technologies. View projects, skills, resume, and contact information."
+    />
+    <meta
+      name="keywords"
+      content="Saudeep Adhikari, Saaudeep, Saudeep, Saudeep Adhikari portfolio, Saudeep Adhikari developer, Saudeep Adhikari Nepal, Saudeep Adhikari React, Saudeep Adhikari Node.js, Saudeep Adhikari full stack developer, Saudeep Adhikari projects, Saudeep Adhikari resume, Saudeep Adhikari GitHub, Saudeep Adhikari LinkedIn, full stack developer Nepal, React developer Nepal, web developer Nepal, MERN stack developer, Saudeep portfolio, saudeepadhikari"
+    />
     <meta name="author" content="Saudeep Adhikari" />
-    <!-- Open Graph / Facebook -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="rating" content="general" />
+    <meta name="distribution" content="global" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="language" content="English" />
+    <meta name="geo.region" content="NP" />
+    <meta name="geo.placename" content="Nepal" />
+
+    <!-- =========================================================
+         CANONICAL & ALTERNATE URLS
+         ========================================================= -->
+    <link rel="canonical" href="https://saudeepadhikari.com.np/" />
+        <!-- Verification placeholders (replace with real tokens after registration) -->
+        <!-- Google Search Console: <meta name="google-site-verification" content="PASTE_GOOGLE_CODE_HERE" /> -->
+        <!-- Bing Webmaster: <meta name="msvalidate.01" content="PASTE_BING_CODE_HERE" /> -->
+    <link rel="alternate" hreflang="en" href="https://saudeepadhikari.com.np/" />
+    <link rel="alternate" hreflang="x-default" href="https://saudeepadhikari.com.np/" />
+
+    <!-- =========================================================
+         OPEN GRAPH / FACEBOOK
+         ========================================================= -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Saudeep Adhikari | Portfolio" />
-    <meta property="og:description" content="Modern, accessible, and responsive portfolio of Saudeep Adhikari, Full Stack Developer." />
-    <meta property="og:image" content="%PUBLIC_URL%/profile.jpg" />
-    <meta property="og:url" content="https://saudeep-portfolio.com" />
-    <!-- Twitter Card -->
+    <meta property="og:site_name" content="Saudeep Adhikari — Portfolio" />
+    <meta property="og:title" content="Saudeep Adhikari — Full Stack Web Developer & Designer" />
+    <meta
+      property="og:description"
+      content="Saudeep Adhikari is a Full Stack Web Developer from Nepal. Explore my projects, skills, resume, and get in touch for collaboration."
+    />
+    <meta property="og:url" content="https://saudeepadhikari.com.np/" />
+    <meta property="og:image" content="https://saudeepadhikari.com.np/assets/og-image.png" />
+      <meta property="og:image" content="%PUBLIC_URL%/assets/og-image.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Saudeep Adhikari — Full Stack Web Developer Portfolio" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- =========================================================
+         TWITTER CARD
+         ========================================================= -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Saudeep Adhikari | Portfolio" />
-    <meta name="twitter:description" content="Modern, accessible, and responsive portfolio of Saudeep Adhikari, Full Stack Developer." />
-    <meta name="twitter:image" content="%PUBLIC_URL%/profile.jpg" />
-    <!-- Canonical -->
-    <link rel="canonical" href="https://saudeep-portfolio.com" />
-    <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <meta name="twitter:site" content="@saudeepadhikari" />
+    <meta name="twitter:creator" content="@saudeepadhikari" />
+    <meta name="twitter:title" content="Saudeep Adhikari — Full Stack Web Developer" />
+    <meta
+      name="twitter:description"
+      content="Full Stack Web Developer from Nepal building modern web apps with React, Node.js, and MongoDB. View projects, skills, and resume."
+    />
+    <meta name="twitter:image" content="https://saudeepadhikari.com.np/assets/og-image.png" />
+      <meta name="twitter:image" content="%PUBLIC_URL%/assets/og-image.svg" />
+    <meta name="twitter:image:alt" content="Saudeep Adhikari — Full Stack Web Developer Portfolio" />
+
+    <!-- =========================================================
+         APP / PWA META
+         ========================================================= -->
+    <meta name="application-name" content="Saudeep Adhikari Portfolio" />
+    <meta name="apple-mobile-web-app-title" content="Saudeep Adhikari" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/assets/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!-- Google Fonts: Inter & Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
-    <!-- Structured Data: JSON-LD -->
+
+    <!-- =========================================================
+         PERFORMANCE HINTS
+         ========================================================= -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://github.com" />
+    <link rel="dns-prefetch" href="https://www.linkedin.com" />
+    <link rel="dns-prefetch" href="https://api.emailjs.com" />
+
+    <!-- Google Fonts: Inter, Outfit, Poppins -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Poppins:wght@700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- =========================================================
+         STRUCTURED DATA — JSON-LD (PERSON)
+         ========================================================= -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Saudeep Adhikari",
-        "url": "https://saudeep-portfolio.com",
-        "image": "%PUBLIC_URL%/profile.jpg",
-        "sameAs": [
-          "https://github.com/saudeep-adhikari",
-          "https://linkedin.com/in/saudeep-adhikari"
+        "alternateName": ["Saudeep", "Saaudeep", "Saudeep Adhikari"],
+        "url": "https://saudeepadhikari.com.np/",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://saudeepadhikari.com.np/"
+        },
+        "image": "https://saudeepadhikari.com.np/assets/profile.jpg",
+        "jobTitle": "Full Stack Web Developer",
+        "description": "Saudeep Adhikari is a Full Stack Web Developer and Designer from Nepal specializing in React, Node.js, MongoDB, and modern web technologies.",
+        "email": "mailto:saudeepadhikari543@gmail.com",
+        "telephone": "",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "NP",
+          "addressLocality": "Nepal"
+        },
+        "nationality": {
+          "@type": "Country",
+          "name": "Nepal"
+        },
+        "knowsAbout": [
+          "JavaScript",
+          "React",
+          "Node.js",
+          "MongoDB",
+          "MySQL",
+          "HTML5",
+          "CSS3",
+          "Tailwind CSS",
+          "Full Stack Development",
+          "Frontend Development",
+          "Backend Development",
+          "Web Design",
+          "Figma"
         ],
-        "jobTitle": "Full Stack Developer",
+        "knowsLanguage": ["en", "ne"],
+        "sameAs": [
+          "https://github.com/SaudeepAdhikari",
+          "https://www.linkedin.com/in/saudeep-adhikari-b558aa2a8/",
+          "https://www.facebook.com/saudeep.adhikariking",
+          "https://www.instagram.com/saudeep.adhikari/"
+        ],
+        "alumniOf": {
+          "@type": "EducationalOrganization",
+          "name": "Nepal"
+        },
         "worksFor": {
           "@type": "Organization",
           "name": "Freelance"
         },
-        "description": "Modern, accessible, and responsive portfolio of Saudeep Adhikari, Full Stack Developer."
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Full Stack Web Developer",
+          "occupationLocation": {
+            "@type": "Country",
+            "name": "Nepal"
+          },
+          "skills": "React, Node.js, MongoDB, JavaScript, HTML5, CSS3, Tailwind CSS, Figma, MySQL"
+        }
       }
     </script>
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
+    <!-- =========================================================
+         STRUCTURED DATA — JSON-LD (WEBSITE)
+         ========================================================= -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Saudeep Adhikari Portfolio",
+        "alternateName": "Saudeep Adhikari",
+        "url": "https://saudeepadhikari.com.np/",
+        "description": "Official portfolio of Saudeep Adhikari, Full Stack Web Developer from Nepal.",
+        "inLanguage": "en",
+        "publisher": {
+          "@type": "Person",
+          "name": "Saudeep Adhikari"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://saudeepadhikari.com.np/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+
+    <!-- =========================================================
+         STRUCTURED DATA — JSON-LD (PROFESSIONAL SERVICE)
+         ========================================================= -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Saudeep Adhikari — Web Development Services",
+        "image": "https://saudeepadhikari.com.np/assets/profile.jpg",
+        "url": "https://saudeepadhikari.com.np/",
+        "description": "Full stack web development services including React frontends, Node.js backends, responsive design, and SEO optimization.",
+        "provider": {
+          "@type": "Person",
+          "name": "Saudeep Adhikari"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Worldwide"
+        },
+        "serviceType": [
+          "Web Development",
+          "Frontend Development",
+          "Backend Development",
+          "Full Stack Development",
+          "Consulting"
+        ],
+        "priceRange": "$$"
+      }
+    </script>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>
+      <h1>Saudeep Adhikari — Full Stack Web Developer</h1>
+      <p>
+        Saudeep Adhikari (also known as Saaudeep) is a Full Stack Web Developer and
+        Designer from Nepal. He specializes in React, Node.js, MongoDB, and modern
+        web technologies.
+      </p>
+      <p>
+        Please enable JavaScript to view the full interactive portfolio at
+        <a href="https://saudeepadhikari.com.np/">saudeepadhikari.com.np</a>.
+      </p>
+    </noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>
