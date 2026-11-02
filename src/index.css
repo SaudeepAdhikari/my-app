@@ -1,8 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Orbitron:wght@500;700;800;900&family=Titillium+Web:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700;1,900&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ══════════════════════════════════════════════════════════════
+   AUTHENTIC FORMULA 1 VISUAL IDENTITY & MOTORSPORT DESIGN SYSTEM
+   Official FIA F1 Red × Petronas Teal × Fastest Lap Purple × Carbon
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  --f1-red:       #E10600;
+  --f1-teal:      #00D2BE;
+  --f1-purple:    #B138DD;
+  --f1-yellow:    #F59E0B;
+  --f1-green:     #10B981;
+  --f1-carbon:    #080B10;
+  --f1-card:      #0F141C;
+  --f1-silver:    #D1D5DB;
+}
 
 @layer base {
   html {
@@ -10,207 +26,251 @@
   }
 
   body {
-    @apply bg-dark text-gray-200 font-sans antialiased overflow-x-hidden;
+    background-color: #080B10;
+    color: #E2E8F0;
+    font-family: 'Titillium Web', 'Inter', sans-serif;
+    overflow-x: hidden;
+    /* Real twill carbon weave texture */
     background-image: 
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(6, 182, 212, 0.07), transparent),
-      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.05), transparent);
+      repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.015) 0px,
+        rgba(255, 255, 255, 0.015) 2px,
+        transparent 2px,
+        transparent 6px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.015) 0px,
+        rgba(255, 255, 255, 0.015) 2px,
+        transparent 2px,
+        transparent 6px
+      ),
+      radial-gradient(circle at 50% 0%, rgba(225, 6, 0, 0.07) 0%, transparent 60%),
+      radial-gradient(circle at 100% 40%, rgba(0, 210, 190, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 0% 80%, rgba(177, 56, 221, 0.05) 0%, transparent 50%);
     background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
   }
 
   ::selection {
-    background: rgba(6, 182, 212, 0.2);
+    background: #E10600;
     color: #ffffff;
   }
 
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: #030712; }
+  /* F1 Racing Red & Teal Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #080B10;
+  }
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, #06b6d4, #8b5cf6);
-    border-radius: 99px;
+    background: linear-gradient(180deg, #E10600, #00D2BE);
+    border-radius: 2px;
   }
 }
 
 @layer components {
-  /* ── Glass System ─────────────────────────────── */
-  .glass {
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 1rem;
+
+  /* ── F1 Aerospace Chamfered Cuts ────────────────────────── */
+  .f1-cut {
+    clip-path: polygon(
+      12px 0%, 
+      100% 0%, 
+      100% calc(100% - 12px), 
+      calc(100% - 12px) 100%, 
+      0% 100%, 
+      0% 12px
+    );
   }
 
-  .glass-strong {
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 1.5rem;
+  .f1-cut-lg {
+    clip-path: polygon(
+      20px 0%, 
+      100% 0%, 
+      100% calc(100% - 20px), 
+      calc(100% - 20px) 100%, 
+      0% 100%, 
+      0% 20px
+    );
   }
 
-  /* ── Buttons ──────────────────────────────────── */
-  .btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300;
-    background: linear-gradient(135deg, #06b6d4, #8b5cf6);
-    color: white;
-    box-shadow: 0 0 25px rgba(6, 182, 212, 0.3);
+  .f1-cut-top-right {
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
   }
-  .btn-primary:hover {
+
+  .f1-cut-bottom-right {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+  }
+
+  /* ── Pit Wall Card Containers ─────────────────────────── */
+  .f1-card {
+    background: linear-gradient(145deg, rgba(18, 24, 36, 0.95), rgba(11, 15, 23, 0.98));
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .f1-card:hover {
+    border-color: rgba(0, 210, 190, 0.4);
+    box-shadow: 0 10px 30px -10px rgba(0, 210, 190, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .f1-card-red:hover {
+    border-color: rgba(225, 6, 0, 0.5);
+    box-shadow: 0 10px 30px -10px rgba(225, 6, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  /* Carbon Fiber Panel */
+  .carbon-panel {
+    background: 
+      repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.02) 0px,
+        rgba(255, 255, 255, 0.02) 2px,
+        transparent 2px,
+        transparent 8px
+      ),
+      #0E131B;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* ── F1 Buttons ───────────────────────────────────────── */
+  .btn-f1-primary {
+    @apply inline-flex items-center justify-center gap-2 font-f1 font-black italic uppercase text-xs md:text-sm tracking-wider px-6 py-3.5 transition-all duration-300;
+    background: linear-gradient(135deg, #E10600 0%, #B30500 100%);
+    color: #ffffff;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    box-shadow: 0 4px 20px rgba(225, 6, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  .btn-f1-primary:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 30px rgba(225, 6, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    background: linear-gradient(135deg, #FF1E1E 0%, #E10600 100%);
+  }
+
+  .btn-f1-teal {
+    @apply inline-flex items-center justify-center gap-2 font-f1 font-black italic uppercase text-xs md:text-sm tracking-wider px-6 py-3.5 transition-all duration-300;
+    background: linear-gradient(135deg, #00D2BE 0%, #009E8F 100%);
+    color: #080B10;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    box-shadow: 0 4px 20px rgba(0, 210, 190, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+
+  .btn-f1-teal:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 30px rgba(0, 210, 190, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  .btn-f1-outline {
+    @apply inline-flex items-center justify-center gap-2 font-f1 font-black italic uppercase text-xs md:text-sm tracking-wider px-6 py-3.5 transition-all duration-300;
+    background: rgba(18, 24, 36, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #F3F4F6;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  }
+
+  .btn-f1-outline:hover {
+    border-color: #00D2BE;
+    color: #00D2BE;
+    background: rgba(0, 210, 190, 0.08);
     transform: translateY(-2px);
-    box-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
-  }
-  .btn-primary:active { transform: scale(0.97); }
-
-  .btn-secondary {
-    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm border transition-all duration-300;
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.03);
-    color: rgba(255, 255, 255, 0.8);
-  }
-  .btn-secondary:hover {
-    border-color: rgba(6, 182, 212, 0.5);
-    background: rgba(6, 182, 212, 0.05);
-    color: #06b6d4;
-    transform: translateY(-2px);
-  }
-  .btn-secondary:active { transform: scale(0.97); }
-
-  /* ── Section Layout ───────────────────────────── */
-  .section-container {
-    @apply w-full max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-20 relative z-10;
   }
 
-  .section-label {
-    @apply inline-flex items-center gap-2 text-xs font-semibold tracking-[0.2em] uppercase mb-5;
-    color: #06b6d4;
+  /* ── Pit Wall Badges ───────────────────────────────────── */
+  .badge-f1 {
+    @apply inline-flex items-center gap-1.5 font-hud uppercase tracking-widest text-[11px] px-2.5 py-1 font-bold;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
   }
 
-  .section-title {
-    @apply font-heading font-extrabold leading-tight tracking-tight text-white;
+  .badge-purple {
+    @apply badge-f1;
+    color: #E9D5FF;
+    border-color: rgba(177, 56, 221, 0.5);
+    background: rgba(177, 56, 221, 0.15);
+    box-shadow: 0 0 10px rgba(177, 56, 221, 0.3);
   }
 
-  /* ── Cards ────────────────────────────────────── */
-  .bento-card {
-    @apply glass rounded-2xl transition-all duration-500;
-  }
-  .bento-card:hover {
-    border-color: rgba(6, 182, 212, 0.2);
-    background: rgba(15, 23, 42, 0.8);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(6, 182, 212, 0.05);
+  .badge-green {
+    @apply badge-f1;
+    color: #A7F3D0;
+    border-color: rgba(16, 185, 129, 0.5);
+    background: rgba(16, 185, 129, 0.15);
   }
 
-  /* ── Input Fields ─────────────────────────────── */
-  .input-field {
-    @apply w-full rounded-xl px-5 py-4 text-gray-200 text-sm transition-all duration-300;
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    outline: none;
-  }
-  .input-field::placeholder { color: rgba(156, 163, 175, 0.5); }
-  .input-field:focus {
-    border-color: rgba(6, 182, 212, 0.4);
-    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.08);
+  .badge-red {
+    @apply badge-f1;
+    color: #FECACA;
+    border-color: rgba(225, 6, 0, 0.5);
+    background: rgba(225, 6, 0, 0.15);
   }
 
-  /* ── Gradient Glow Blobs ──────────────────────── */
-  .glow-cyan {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-    background: radial-gradient(circle, rgba(6, 182, 212, 0.15), transparent 70%);
-    pointer-events: none;
-  }
-  .glow-purple {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(120px);
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.12), transparent 70%);
-    pointer-events: none;
+  .badge-yellow {
+    @apply badge-f1;
+    color: #FDE68A;
+    border-color: rgba(245, 158, 11, 0.5);
+    background: rgba(245, 158, 11, 0.15);
   }
 
-  /* ── Project Image Treatment ─────────────────── */
-  .project-image-grade {
-    filter: saturate(0.82) brightness(0.72) contrast(1.08);
+  /* ── F1 Section Header ────────────────────────────────── */
+  .f1-section-header {
+    @apply relative mb-12 md:mb-16;
   }
-  .group:hover .project-image-grade {
-    filter: saturate(0.9) brightness(0.78) contrast(1.1);
+
+  .f1-section-title {
+    @apply text-4xl sm:text-5xl md:text-6xl font-black italic tracking-tight uppercase text-white flex items-center gap-3;
+  }
+
+  .f1-section-subtitle {
+    @apply font-hud text-xs sm:text-sm tracking-[0.25em] text-f1Teal uppercase font-bold flex items-center gap-2 mt-2;
+  }
+
+  /* ── Chequered Flag Ribbon ────────────────────────────── */
+  .chequered-stripe {
+    height: 6px;
+    background-image: 
+      linear-gradient(45deg, #fff 25%, transparent 25%), 
+      linear-gradient(-45deg, #fff 25%, transparent 25%), 
+      linear-gradient(45deg, transparent 75%, #fff 75%), 
+      linear-gradient(-45deg, transparent 75%, #fff 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+    opacity: 0.25;
+  }
+
+  /* Speed Line Horizontal Accent */
+  .f1-speed-strip {
+    background: linear-gradient(90deg, #E10600 0%, #00D2BE 50%, transparent 100%);
+    height: 2px;
   }
 }
 
-/* ── Text Gradient ──────────────────────────────── */
-.text-gradient {
-  background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ── Custom Animations ────────────────────────────────────── */
+@keyframes shiftLightPulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.05); }
 }
 
-.text-gradient-warm {
-  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.shift-light-flash {
+  animation: shiftLightPulse 0.3s ease-in-out infinite;
 }
 
-/* ── Noise Texture Overlay ──────────────────────── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+@keyframes pulseGlow {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(0, 210, 190, 0.4)); }
+  50% { filter: drop-shadow(0 0 18px rgba(0, 210, 190, 0.9)); }
 }
 
-/* ── Grid Dot Background ────────────────────────── */
-.grid-bg {
-  background-image: 
-    linear-gradient(rgba(6,182,212,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(6,182,212,0.03) 1px, transparent 1px);
-  background-size: 64px 64px;
-}
-
-/* ── Marquee / Infinite scroll ──────────────────── */
-.marquee-container { @apply flex overflow-hidden; }
-.marquee-track {
-  display: flex;
-  animation: marquee 30s linear infinite;
-  white-space: nowrap;
-}
-.marquee-track:hover { animation-play-state: paused; }
-
-/* ── Glow Divider ───────────────────────────────── */
-.glow-divider {
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(6,182,212,0.4), rgba(139,92,246,0.4), transparent);
-}
-
-/* ── Accessibility ──────────────────────────────── */
-html.font-small  { font-size: 14px; }
-html.font-medium { font-size: 16px; }
-html.font-large  { font-size: 18px; }
-html.font-xlarge { font-size: 20px; }
-
-html.high-contrast body { background-color: #000000; color: #ffffff; }
-html.high-contrast .glass,
-html.high-contrast .glass-strong {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-}
-
-*:focus-visible {
-  outline: 2px solid #06b6d4;
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-.keyboard-nav *:focus {
-  outline: 3px solid #06b6d4;
-  outline-offset: 3px;
+.glow-f1-teal {
+  animation: pulseGlow 2s ease-in-out infinite;
 }

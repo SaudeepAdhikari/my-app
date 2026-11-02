@@ -1,471 +1,251 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
-import { FaExternalLinkAlt, FaGithub, FaChevronDown, FaChevronUp, FaCheck } from 'react-icons/fa';
+import React, { useState } from 'react';
 import { usePortfolioData } from '../context/PortfolioDataContext';
+import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 
-const fadeUp = {
-    hidden: { opacity: 0, y: 28, filter: 'blur(10px)' },
-    visible: (i = 0) => ({
-        opacity: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        transition: { delay: i * 0.07, duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-    }),
-};
+const CIRCUITS = [
+  { gp: 'MONACO GP', track: 'Circuit de Monaco', country: 'MC', laps: 78, length: '3.337 km' },
+  { gp: 'SILVERSTONE GP', track: 'Silverstone Circuit', country: 'GB', laps: 52, length: '5.891 km' },
+  { gp: 'SUZUKA GP', track: 'Suzuka International', country: 'JP', laps: 53, length: '5.807 km' },
+  { gp: 'SPA GP', track: 'Spa-Francorchamps', country: 'BE', laps: 44, length: '7.004 km' },
+  { gp: 'MONZA GP', track: 'Autodromo Nazionale Monza', country: 'IT', laps: 53, length: '5.793 km' },
+  { gp: 'SINGAPORE GP', track: 'Marina Bay Street Circuit', country: 'SG', laps: 62, length: '4.940 km' },
+  { gp: 'AUSTIN GP', track: 'Circuit of the Americas', country: 'US', laps: 56, length: '5.513 km' },
+];
 
-const TECH_COLORS = {
-    React: { bg: 'rgba(97,218,251,0.1)', border: 'rgba(97,218,251,0.28)', color: '#61dafb' },
-    'Node.js': { bg: 'rgba(60,135,58,0.12)', border: 'rgba(60,135,58,0.3)', color: '#68a063' },
-    MongoDB: { bg: 'rgba(71,162,72,0.12)', border: 'rgba(71,162,72,0.3)', color: '#47a248' },
-    CSS: { bg: 'rgba(21,114,182,0.12)', border: 'rgba(21,114,182,0.3)', color: '#60a5fa' },
-    EmailJS: { bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.3)', color: '#fbbf24' },
-    HTML: { bg: 'rgba(228,77,38,0.12)', border: 'rgba(228,77,38,0.3)', color: '#f97316' },
-    JS: { bg: 'rgba(247,223,30,0.12)', border: 'rgba(247,223,30,0.3)', color: '#facc15' },
-    API: { bg: 'rgba(6,182,212,0.12)', border: 'rgba(6,182,212,0.3)', color: '#06b6d4' },
-};
+/* ── SVG Track Silhouette Component ── */
+const TrackSilhouette = ({ index }) => {
+  const tracks = [
+    // Monaco
+    "M 10 30 L 40 30 L 60 15 L 85 20 L 95 40 L 75 75 L 45 80 L 35 60 L 15 65 Z",
+    // Silverstone
+    "M 15 45 L 35 20 L 70 20 L 90 40 L 80 75 L 45 85 L 25 70 Z",
+    // Suzuka Figure 8
+    "M 20 25 L 50 20 L 80 40 L 50 60 L 80 80 L 40 85 L 20 60 L 45 40 Z",
+    // Spa
+    "M 15 20 L 55 15 L 90 35 L 75 65 L 85 85 L 40 80 L 25 55 Z",
+    // Monza
+    "M 10 40 L 85 20 L 95 55 L 75 80 L 25 80 L 10 60 Z",
+    // Generic
+    "M 15 30 L 50 15 L 85 30 L 85 70 L 50 85 L 15 70 Z",
+  ];
 
-const DEFAULT_TECH_COLOR = {
-    bg: 'rgba(255,255,255,0.04)',
-    border: 'rgba(255,255,255,0.1)',
-    color: 'rgba(156,163,175,0.95)',
-};
+  const path = tracks[index % tracks.length];
 
-const STATUS_STYLES = {
-    Live: { bg: 'rgba(6,182,212,0.12)', border: 'rgba(6,182,212,0.35)', color: '#06b6d4' },
-    Completed: { bg: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.12)', color: 'rgba(156,163,175,0.95)' },
-    'In Progress': { bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.35)', color: '#fbbf24' },
-};
-
-const getTechnologies = (project) => project.technologies || project.tags || [];
-const getGithubUrl = (project) => {
-    if (project.github) return project.github;
-    if (project.sourceLink) return project.sourceLink;
-    const hasDemo = project.demo || project.liveLink;
-    if (!hasDemo && project.link) return project.link;
-    return null;
-};
-const getDemoUrl = (project) => {
-    if (project.demo) return project.demo;
-    if (project.liveLink) return project.liveLink;
-    if (project.link) return project.link;
-    return null;
-};
-
-const TechBadge = ({ label, compact = false }) => {
-    const colors = TECH_COLORS[label] || DEFAULT_TECH_COLOR;
-
-    return (
-        <span
-            className={`inline-flex items-center font-semibold tracking-wide transition-all duration-300 ${
-                compact ? 'px-2 py-0.5 rounded-md text-[9px]' : 'px-2.5 py-1 rounded-lg text-[10px]'
-            }`}
-            style={{
-                background: colors.bg,
-                border: `1px solid ${colors.border}`,
-                color: colors.color,
-            }}
-        >
-            {label}
-        </span>
-    );
-};
-
-const StatusBadge = ({ status }) => {
-    const style = STATUS_STYLES[status] || STATUS_STYLES.Completed;
-
-    return (
-        <span
-            className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide"
-            style={{
-                background: style.bg,
-                border: `1px solid ${style.border}`,
-                color: style.color,
-            }}
-        >
-            {status}
-        </span>
-    );
-};
-
-const ProjectCard = ({ project, index, isExpanded, onToggle }) => {
-    const [isHovered, setIsHovered] = useState(false);
-    const technologies = getTechnologies(project);
-    const githubUrl = getGithubUrl(project);
-    const demoUrl = getDemoUrl(project);
-    const isActive = isHovered || isExpanded;
-    const statusStyle = STATUS_STYLES[project.status] || STATUS_STYLES.Completed;
-
-    const handleCardClick = (e) => {
-        e.stopPropagation();
-        if (window.matchMedia('(hover: none)').matches) {
-            onToggle(project.title);
-        }
-    };
-
-    return (
-        <motion.article
-            layout
-            initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 0.97 }}
-            transition={{ duration: 0.5, delay: index * 0.06 }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onClick={handleCardClick}
-            className={`group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${
-                project.featured ? 'ring-1 ring-accent/25 shadow-[0_0_40px_rgba(6,182,212,0.08)]' : ''
-            } ${isActive ? '-translate-y-1.5 scale-[1.01] shadow-[0_24px_60px_rgba(0,0,0,0.45),0_0_32px_rgba(6,182,212,0.1)]' : 'shadow-[0_16px_40px_rgba(0,0,0,0.3)]'}`}
-            style={{
-                background: 'rgba(15,23,42,0.75)',
-                border: isActive ? '1px solid rgba(6,182,212,0.35)' : '1px solid rgba(255,255,255,0.06)',
-                backdropFilter: 'blur(20px)',
-            }}
-        >
-            <div className="relative aspect-[4/3] overflow-hidden">
-                <img
-                    src={project.image}
-                    alt={`${project.title} — ${project.description}`}
-                    className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 project-image-grade ${
-                        isActive ? 'scale-[1.05]' : 'scale-100'
-                    }`}
-                    loading="lazy"
-                    width="1600"
-                    height="1200"
-                />
-
-                <div
-                    className="absolute inset-0 pointer-events-none transition-opacity duration-500"
-                    style={{
-                        background:
-                            'linear-gradient(180deg, rgba(3,7,18,0.1) 0%, rgba(3,7,18,0.35) 50%, rgba(15,23,42,0.92) 100%)',
-                        opacity: isActive ? 0.35 : 1,
-                    }}
-                />
-
-                {project.featured && (
-                    <div className="absolute top-3 left-3 z-10">
-                        <span
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-[0.16em]"
-                            style={{
-                                background: 'rgba(3,7,18,0.8)',
-                                border: '1px solid rgba(6,182,212,0.35)',
-                                color: '#06b6d4',
-                                backdropFilter: 'blur(10px)',
-                            }}
-                        >
-                            <span className="w-1 h-1 rounded-full bg-accent" />
-                            Featured
-                        </span>
-                    </div>
-                )}
-
-                <div
-                    className={`absolute inset-x-0 bottom-0 p-4 sm:p-5 z-10 transition-all duration-500 ${
-                        isActive ? 'opacity-0 translate-y-3 pointer-events-none' : 'opacity-100 translate-y-0'
-                    }`}
-                >
-                    {project.category && (
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent mb-2">
-                            {project.category}
-                        </p>
-                    )}
-                    <h3 className="font-heading font-bold text-lg text-white leading-tight mb-3">
-                        {project.title}
-                    </h3>
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                        {technologies.slice(0, 3).map((tech, i) => (
-                            <TechBadge key={i} label={tech} compact />
-                        ))}
-                        {technologies.length > 3 && (
-                            <span className="text-[9px] font-semibold text-gray-500 px-1.5">
-                                +{technologies.length - 3}
-                            </span>
-                        )}
-                    </div>
-                </div>
-
-                <div
-                    className={`absolute inset-0 z-20 flex flex-col justify-end p-4 sm:p-5 transition-all duration-500 ${
-                        isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'
-                    }`}
-                    style={{
-                        background:
-                            'linear-gradient(180deg, rgba(3,7,18,0.55) 0%, rgba(3,7,18,0.82) 40%, rgba(15,23,42,0.96) 100%)',
-                        backdropFilter: isActive ? 'blur(8px)' : 'blur(0px)',
-                    }}
-                >
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                        <div className="flex items-center gap-2 flex-wrap">
-                            {project.category && (
-                                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-accent">
-                                    {project.category}
-                                </span>
-                            )}
-                            {project.status && <StatusBadge status={project.status} />}
-                        </div>
-                        {project.year && (
-                            <span className="text-[10px] font-medium text-gray-500">{project.year}</span>
-                        )}
-                    </div>
-
-                    <h3 className="font-heading font-bold text-lg text-white mb-2">{project.title}</h3>
-                    <p className="text-secondary text-xs sm:text-sm leading-relaxed mb-3 line-clamp-2">
-                        {project.description}
-                    </p>
-
-                    {project.keyFeatures?.length > 0 && (
-                        <div className="mb-3">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/45 mb-1.5">
-                                Key Features
-                            </p>
-                            <ul className="space-y-1">
-                                {project.keyFeatures.slice(0, 3).map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-2 text-[11px] text-gray-400">
-                                        <FaCheck className="text-accent mt-0.5 flex-shrink-0" size={8} />
-                                        <span>{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-
-                    {technologies.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 mb-4">
-                            {technologies.map((tech, i) => (
-                                <TechBadge key={i} label={tech} />
-                            ))}
-                        </div>
-                    )}
-
-                    <div
-                        className="flex items-center gap-2 pt-3 border-t"
-                        style={{ borderColor: 'rgba(255,255,255,0.08)' }}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {githubUrl && (
-                            <a
-                                href={githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all duration-300 hover:-translate-y-0.5 mr-2"
-                                style={{
-                                    background: 'rgba(255,255,255,0.05)',
-                                    border: '1px solid rgba(255,255,255,0.1)',
-                                    color: 'rgba(255,255,255,0.9)',
-                                }}
-                            >
-                                <FaGithub size={12} />
-                                GitHub
-                            </a>
-                        )}
-                        {demoUrl && (
-                            <a
-                                href={demoUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all duration-300 hover:-translate-y-0.5"
-                                style={{
-                                    background: statusStyle.bg,
-                                    border: `1px solid ${statusStyle.border}`,
-                                    color: statusStyle.color,
-                                }}
-                            >
-                                <FaExternalLinkAlt size={10} />
-                                Live Demo
-                            </a>
-                        )}
-                    </div>
-                </div>
-            </div>
-        </motion.article>
-    );
+  return (
+    <svg viewBox="0 0 100 100" className="w-16 h-16 opacity-30 group-hover:opacity-80 transition-opacity" fill="none">
+      <path
+        d={path}
+        stroke="#00D2BE"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 };
 
 const Projects = () => {
-    const { data } = usePortfolioData();
-    const [showAll, setShowAll] = useState(false);
-    const [selectedFilter, setSelectedFilter] = useState('All');
-    const [expandedCard, setExpandedCard] = useState(null);
-    const sectionRef = useRef(null);
+  const { data } = usePortfolioData();
+  const [selectedCategory, setSelectedCategory] = useState('ALL');
 
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (sectionRef.current && !sectionRef.current.contains(e.target)) {
-                setExpandedCard(null);
-            }
-        };
-        document.addEventListener('click', handleClickOutside);
-        return () => document.removeEventListener('click', handleClickOutside);
-    }, []);
+  if (!data) return null;
+  const { projects } = data;
 
-    if (!data) return null;
-    const { projects } = data;
+  const categories = ['ALL', 'Full Stack', 'Frontend', 'Web App'];
 
-    const allFilters = [
-        'All',
-        ...new Set(projects.flatMap((p) => getTechnologies(p))),
-    ];
+  const filteredProjects = selectedCategory === 'ALL'
+    ? projects
+    : projects.filter((p) => p.category === selectedCategory);
 
-    const filtered = selectedFilter === 'All'
-        ? projects
-        : projects.filter((p) => getTechnologies(p).includes(selectedFilter));
+  return (
+    <section id="projects" className="relative py-24 border-t border-white/5 overflow-hidden">
+      {/* Background Graphic */}
+      <div className="absolute right-0 top-10 font-f1 font-black italic text-[260px] text-white/[0.015] select-none pointer-events-none">
+        P1
+      </div>
 
-    const sorted = [...filtered].sort((a, b) => Number(b.featured) - Number(a.featured));
-    const displayed = showAll ? sorted : sorted.slice(0, 4);
-
-    const handleToggle = (title) => {
-        setExpandedCard((prev) => (prev === title ? null : title));
-    };
-
-    // Build ItemList structured data for projects (helps search engines understand the portfolio list)
-    const SITE_URL = 'https://saudeepadhikari.com.np';
-    const itemList = sorted.map((p, idx) => ({
-        '@type': 'ListItem',
-        position: idx + 1,
-        name: p.title,
-        url: p.demo || p.github || `${SITE_URL}/#projects`
-    }));
-
-    return (
-        <section id="projects" className="relative overflow-hidden" ref={sectionRef}>
-            <Helmet>
-                <script type="application/ld+json">
-                    {JSON.stringify({
-                        '@context': 'https://schema.org',
-                        '@type': 'ItemList',
-                        itemListElement: itemList
-                    })}
-                </script>
-            </Helmet>
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="glow-purple w-[600px] h-[600px] -top-32 right-0 opacity-35" />
-                <div className="glow-cyan w-[450px] h-[450px] bottom-0 left-[-80px] opacity-25" />
-                <div
-                    className="absolute inset-0 opacity-25"
-                    style={{
-                        background:
-                            'radial-gradient(ellipse 65% 45% at 50% 0%, rgba(6,182,212,0.07), transparent 60%)',
-                    }}
-                />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="bg-f1Red text-white text-[10px] font-black italic px-2 py-0.5 rounded-2xs">
+                SECTOR 05
+              </span>
+              <div className="font-hud text-xs tracking-[0.25em] text-f1Teal font-bold uppercase">
+                FORMULA 1 WORLD CHAMPIONSHIP // RACE ARCHIVES
+              </div>
             </div>
+            <h2 className="f1-section-title mt-2">
+              GRAND PRIX VICTORIES (FEATURED PROJECTS)
+            </h2>
+            <div className="f1-speed-strip w-48 mt-3" />
+          </div>
 
-            <div className="section-container relative z-10">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
-                    <div>
-                        <motion.p
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            className="section-label"
-                        >
-                            <span className="w-6 h-px bg-accent inline-block" />
-                            Portfolio
-                        </motion.p>
-                        <motion.h2
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            custom={1}
-                            variants={fadeUp}
-                            className="section-title text-4xl md:text-5xl"
-                        >
-                            Selected <span className="text-gradient">Work</span>
-                        </motion.h2>
-                    </div>
-                    <motion.p
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        custom={2}
-                        variants={fadeUp}
-                        className="text-secondary max-w-sm text-sm leading-relaxed"
-                    >
-                        Real products built to solve real-world problems — hover to explore each case study.
-                    </motion.p>
+          {/* Category Filter Buttons in Pit Wall Style */}
+          <div className="flex items-center gap-1.5 bg-[#05070B] p-1.5 border border-white/10 rounded-sm">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3 py-1.5 font-f1 font-bold text-xs uppercase tracking-wider rounded-2xs transition-all cursor-pointer ${
+                  selectedCategory === cat
+                    ? 'bg-f1Red text-white shadow-md shadow-f1Red/30'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Projects Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProjects.map((project, idx) => {
+            const circuit = CIRCUITS[idx % CIRCUITS.length];
+            const roundNum = String(idx + 1).padStart(2, '0');
+
+            return (
+              <div
+                key={project.title}
+                className="f1-card group flex flex-col justify-between overflow-hidden border border-white/10 hover:border-f1Teal/50 transition-all duration-300"
+                style={{ clipPath: 'polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)' }}
+              >
+                {/* Top Race Banner */}
+                <div className="bg-[#05070B] px-4 py-2 border-b border-white/10 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-black text-f1Red">
+                      RD {roundNum}
+                    </span>
+                    <span className="font-f1 font-black italic text-xs text-white uppercase tracking-wider">
+                      {circuit.gp}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="badge-purple text-[9px] py-0.5 px-1.5">
+                      P1 🏆
+                    </span>
+                  </div>
                 </div>
 
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    custom={3}
-                    variants={fadeUp}
-                    className="flex flex-wrap gap-2 mb-12"
-                >
-                    {allFilters.map((filter) => {
-                        const isActive = selectedFilter === filter;
-                        return (
-                            <button
-                                key={filter}
-                                onClick={() => {
-                                    setSelectedFilter(filter);
-                                    setExpandedCard(null);
-                                }}
-                                className="px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 hover:-translate-y-0.5"
-                                style={{
-                                    background: isActive
-                                        ? 'rgba(6,182,212,0.15)'
-                                        : 'rgba(255,255,255,0.03)',
-                                    border: isActive
-                                        ? '1px solid rgba(6,182,212,0.4)'
-                                        : '1px solid rgba(255,255,255,0.06)',
-                                    color: isActive ? '#06b6d4' : 'rgba(156,163,175,0.8)',
-                                }}
-                            >
-                                {filter}
-                            </button>
-                        );
-                    })}
-                </motion.div>
+                {/* Project Image & Track Silhouette Overlay */}
+                <div className="relative h-48 overflow-hidden bg-black/60">
+                  {project.image ? (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-center filter grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                      onError={(e) => {
+                        e.target.src = '/assets/profile.jpg';
+                      }}
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-[#0E131C] flex items-center justify-center font-racing text-white/20 text-3xl">
+                      F1 TELEMETRY
+                    </div>
+                  )}
+                  {/* Subtle Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#080B10] via-black/30 to-transparent" />
 
-                <AnimatePresence mode="popLayout">
-                    <motion.div
-                        layout
-                        key={`${selectedFilter}-${showAll}`}
-                        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-6"
-                    >
-                        {displayed.map((project, index) => (
-                            <ProjectCard
-                                key={project.title}
-                                project={project}
-                                index={index}
-                                isExpanded={expandedCard === project.title}
-                                onToggle={handleToggle}
-                            />
+                  {/* Circuit Watermark Silhouette */}
+                  <div className="absolute top-2 right-2 pointer-events-none">
+                    <TrackSilhouette index={idx} />
+                  </div>
+
+                  {/* Circuit Details Tag */}
+                  <div className="absolute bottom-2 left-3 font-mono text-[10px] text-f1Teal bg-black/70 px-2 py-0.5 rounded border border-f1Teal/20">
+                    {circuit.track} {'//'} {circuit.length}
+                  </div>
+                </div>
+
+                {/* Content Body */}
+                <div className="p-5 flex-1 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-hud text-[10px] text-gray-400 uppercase tracking-widest">
+                        SPEC // {project.category || 'FULL STACK'}
+                      </span>
+                      <span className="font-mono text-[10px] text-f1Teal font-bold">
+                        FASTEST LAP: 1:{12 + idx}.{400 + idx * 23}s
+                      </span>
+                    </div>
+
+                    <h3 className="font-f1 font-black italic text-xl text-white uppercase group-hover:text-f1Teal transition-colors mb-2">
+                      {project.title}
+                    </h3>
+
+                    <p className="font-sans text-xs text-gray-300 leading-relaxed line-clamp-3 mb-4">
+                      {project.description}
+                    </p>
+
+                    {/* Key Telemetry Features */}
+                    {project.keyFeatures && (
+                      <div className="space-y-1 mb-4 border-l-2 border-f1Red/50 pl-2.5 font-sans text-[11px] text-gray-400">
+                        {project.keyFeatures.slice(0, 2).map((kf, i) => (
+                          <div key={i} className="flex items-center gap-1.5">
+                            <span className="w-1 h-1 bg-f1Red rounded-full" />
+                            <span>{kf}</span>
+                          </div>
                         ))}
-                    </motion.div>
-                </AnimatePresence>
+                      </div>
+                    )}
+                  </div>
 
-                {filtered.length > 4 && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 12 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-center mt-12"
-                    >
-                        <button
-                            onClick={() => {
-                                setShowAll(!showAll);
-                                setExpandedCard(null);
-                            }}
-                            className="btn-secondary"
+                  {/* Tech Decals & Launch Links */}
+                  <div>
+                    {/* Technologies */}
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {project.technologies && project.technologies.map((t) => (
+                        <span
+                          key={t}
+                          className="px-2 py-0.5 bg-white/5 border border-white/10 text-[10px] font-mono text-gray-300 rounded-2xs"
                         >
-                            {showAll ? (
-                                <>
-                                    <FaChevronUp size={12} /> Show Less
-                                </>
-                            ) : (
-                                <>
-                                    <FaChevronDown size={12} /> View All ({filtered.length})
-                                </>
-                            )}
-                        </button>
-                    </motion.div>
-                )}
-            </div>
-        </section>
-    );
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action Links */}
+                    <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                      {project.github ? (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 font-f1 font-bold text-xs uppercase text-gray-300 hover:text-f1Teal transition-colors"
+                        >
+                          <FaGithub className="text-sm" />
+                          <span>SOURCE CODE (GITHUB)</span>
+                        </a>
+                      ) : (
+                        <span className="font-mono text-[10px] text-gray-500">PRIVATE REPO</span>
+                      )}
+
+                      {(project.demo || project.liveLink || project.link) ? (
+                        <a
+                          href={project.demo || project.liveLink || project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-f1-primary text-[10px] py-1.5 px-3"
+                        >
+                          <span>LIVE DEMO (VISIT)</span>
+                          <FaExternalLinkAlt className="text-[9px]" />
+                        </a>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
+    </section>
+  );
 };
 
 export default Projects;

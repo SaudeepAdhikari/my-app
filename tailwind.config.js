@@ -7,65 +7,86 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#ffffff', // High contrast white for premium feel
-        secondary: '#9ca3af', // Gray 400 for secondary text
-        accent: '#06b6d4', // Cyan
-        accentHover: '#0891b2', // Darker Cyan
-        purpleGlow: '#8b5cf6', // Electric Purple
-        dark: '#030712', // Deep Navy/Black
-        card: '#0f172a', // Slate 900 for cards
-        glass: 'rgba(255, 255, 255, 0.02)',
-        glassBorder: 'rgba(255, 255, 255, 0.05)',
+        // Authentic Formula 1 Color Palette
+        primary: '#ffffff',
+        secondary: '#94A3B8',
+        f1Red: '#E10600',        // Official FIA Formula 1 Red
+        f1Teal: '#00D2BE',       // Petronas Mercedes Teal
+        accent: '#00D2BE',       // Primary motorsport accent
+        accentHover: '#00b5a3',
+        f1Purple: '#B138DD',     // F1 Fastest Lap Purple
+        f1Yellow: '#F59E0B',     // Yellow Flag / Medium Tyre
+        f1Green: '#10B981',      // Green Flag / Personal Best
+        f1Silver: '#D1D5DB',     // Silver Arrow Metallic
+        f1Gold: '#EAB308',       // P1 Trophy Gold
+        dark: '#080B10',         // Cockpit Black
+        darkAlt: '#0E131B',      // Carbon Chassis
+        card: '#121824',         // Telemetry Panel Card
+        glass: 'rgba(18, 24, 36, 0.75)',
+        glassBorder: 'rgba(255, 255, 255, 0.08)',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
-        heading: ['Outfit', 'Inter', 'sans-serif'],
+        f1: ['"Titillium Web"', 'sans-serif'],
+        racing: ['"Orbitron"', '"Titillium Web"', 'sans-serif'],
+        hud: ['"Chakra Petch"', 'sans-serif'],
+        heading: ['"Titillium Web"', '"Outfit"', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
       animation: {
-        'blob': 'blob 7s infinite',
-        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'fade-in': 'fadeIn 0.4s ease-out forwards',
         'slide-up': 'slideUp 0.5s ease-out forwards',
-        'spotlight': 'spotlight 2s ease .75s 1 forwards',
-        'border-flow': 'borderFlow 3s linear infinite',
         'marquee': 'marquee 25s linear infinite',
-        'float': 'float 6s ease-in-out infinite',
+        'speed-blur': 'speedBlur 1.5s ease-in-out infinite alternate',
+        'rev-pulse': 'revPulse 0.6s ease-in-out infinite alternate',
+        'flag-wave': 'flagWave 2s ease-in-out infinite',
+        'drs-glow': 'drsGlow 1.5s ease-in-out infinite',
       },
       keyframes: {
-        blob: {
-          '0%': { transform: 'translate(0px, 0px) scale(1)' },
-          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-          '100%': { transform: 'translate(0px, 0px) scale(1)' },
-        },
         fadeIn: {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '0%': { opacity: '0', transform: 'translateY(8px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '0%': { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        spotlight: {
-          '0%': { opacity: 0, transform: 'translate(-72%, -62%) scale(0.5)' },
-          '100%': { opacity: 1, transform: 'translate(-50%,-40%) scale(1)' },
-        },
-        borderFlow: {
-          '0%, 100%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
         },
         marquee: {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-100%)' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-20px)' },
-        }
+        speedBlur: {
+          '0%': { filter: 'drop-shadow(0 0 4px #00D2BE)' },
+          '100%': { filter: 'drop-shadow(0 0 16px #00D2BE)' },
+        },
+        revPulse: {
+          '0%': { opacity: '0.7' },
+          '100%': { opacity: '1' },
+        },
+        flagWave: {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '50%': { transform: 'rotate(8deg)' },
+        },
+        drsGlow: {
+          '0%, 100%': { boxShadow: '0 0 8px rgba(0, 210, 190, 0.5)' },
+          '50%': { boxShadow: '0 0 24px rgba(0, 210, 190, 0.9)' },
+        },
       },
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'premium-gradient': 'linear-gradient(to right, #06b6d4, #8b5cf6)',
-        'hero-glow': 'conic-gradient(from 180deg at 50% 50%, #06b6d4 0deg, #8b5cf6 180deg, #030712 360deg)',
+        'carbon-twill': `repeating-linear-gradient(
+          45deg,
+          #0b0f17 0px,
+          #0b0f17 4px,
+          #111622 4px,
+          #111622 8px
+        )`,
+        'chequered': `conic-gradient(
+          #ffffff 90deg,
+          #000000 90deg 180deg,
+          #ffffff 180deg 270deg,
+          #000000 270deg
+        )`,
+        'pitwall-gradient': 'linear-gradient(180deg, rgba(14,19,27,0.95) 0%, rgba(8,11,16,0.98) 100%)',
       }
     },
   },
