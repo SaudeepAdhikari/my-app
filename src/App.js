@@ -13,9 +13,11 @@ import ScrollProgress from './components/ScrollProgress';
 import ResumeDownload from './components/ResumeDownload';
 import AvailabilityBadge from './components/AvailabilityBadge';
 import AccessibilityPanel from './components/AccessibilityPanel';
+import CommandPalette from './components/CommandPalette';
 import EasterEgg from './components/EasterEgg';
 import GlobalSEO from './components/GlobalSEO';
 import { PortfolioDataProvider, usePortfolioData } from './context/PortfolioDataContext';
+import { LiveryProvider } from './context/LiveryContext';
 
 function AppContent() {
   usePortfolioData();
@@ -33,6 +35,7 @@ function AppContent() {
       <Navbar />
       <AvailabilityBadge />
       <AccessibilityPanel />
+      <CommandPalette />
       <EasterEgg />
 
       <main id="main-content" role="main">
@@ -55,7 +58,9 @@ function AppContent() {
 function App() {
   return (
     <PortfolioDataProvider>
-      <AppContent />
+      <LiveryProvider>
+        <AppContent />
+      </LiveryProvider>
     </PortfolioDataProvider>
   );
 }

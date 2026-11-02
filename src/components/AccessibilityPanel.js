@@ -90,7 +90,7 @@ const AccessibilityPanel = () => {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -100 }}
                         transition={{ type: 'spring', damping: 25 }}
-                        className="fixed bottom-24 left-8 z-50 w-80 glass-panel p-6"
+                        className="fixed bottom-24 left-8 z-50 w-80 bg-[#0B0F17]/90 backdrop-blur-md border border-white/20 shadow-2xl rounded-sm p-6"
                         ref={panelRef}
                     >
                         {/* Header */}

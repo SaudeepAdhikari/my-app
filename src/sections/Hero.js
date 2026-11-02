@@ -1,65 +1,167 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import { Helmet } from 'react-helmet-async';
 import { usePortfolioData } from '../context/PortfolioDataContext';
 import { getIcon } from '../utils/getIcon';
-import { FaFlag, FaDownload, FaBroadcastTower, FaRedo } from 'react-icons/fa';
+import { FaFlag, FaDownload, FaBroadcastTower } from 'react-icons/fa';
 import { HiLightningBolt } from 'react-icons/hi';
 
 /* ── Starting Lights Gantry Component ── */
+/* ── Interactive Starting Lights & Reaction Time Benchmark ── */
 const StartingLights = () => {
+  const [gameState, setGameState] = useState('idle'); // 'idle' | 'arming' | 'ready' | 'jumpstart' | 'finished'
   const [lightsCount, setLightsCount] = useState(0);
-  const [lightsOut, setLightsOut] = useState(false);
+  const [reactionTime, setReactionTime] = useState(null);
+  const [bestTime, setBestTime] = useState(() => {
+    const saved = localStorage.getItem('f1_reaction_best');
+    return saved ? parseInt(saved, 10) : null;
+  });
 
-  const startSequence = () => {
-    setLightsOut(false);
-    setLightsCount(0);
-    let step = 0;
-    const interval = setInterval(() => {
-      step += 1;
-      setLightsCount(step);
-      if (step >= 5) {
-        clearInterval(interval);
-        setTimeout(() => {
-          setLightsOut(true);
-        }, 1200 + Math.random() * 800);
-      }
-    }, 700);
-  };
+  const lightsOutTimeRef = useRef(null);
+  const stepTimerRef = useRef(null);
+  const lightsOutTimerRef = useRef(null);
 
+  // Clean up timers on unmount
   useEffect(() => {
-    startSequence();
+    return () => {
+      clearTimeout(stepTimerRef.current);
+      clearTimeout(lightsOutTimerRef.current);
+    };
   }, []);
 
+  const startSequence = useCallback(() => {
+    clearTimeout(stepTimerRef.current);
+    clearTimeout(lightsOutTimerRef.current);
+
+    setGameState('arming');
+    setLightsCount(0);
+    setReactionTime(null);
+    lightsOutTimeRef.current = null;
+
+    let step = 0;
+    const illuminateNext = () => {
+      step += 1;
+      setLightsCount(step);
+      if (step < 5) {
+        stepTimerRef.current = setTimeout(illuminateNext, 700);
+      } else {
+        // All 5 lights are on: randomized hold between 1.0s and 3.0s before extinguishing
+        const randomHold = 1000 + Math.random() * 2000;
+        lightsOutTimerRef.current = setTimeout(() => {
+          setGameState('ready');
+          lightsOutTimeRef.current = performance.now();
+        }, randomHold);
+      }
+    };
+
+    stepTimerRef.current = setTimeout(illuminateNext, 600);
+  }, []);
+
+  // Trigger when user clicks to launch
+  const handleLaunchAttempt = useCallback(() => {
+    if (gameState === 'idle' || gameState === 'finished' || gameState === 'jumpstart') {
+      startSequence();
+      return;
+    }
+
+    if (gameState === 'arming') {
+      // Jump start! Clicked while lights were still illuminating
+      clearTimeout(stepTimerRef.current);
+      clearTimeout(lightsOutTimerRef.current);
+      setGameState('jumpstart');
+      return;
+    }
+
+    if (gameState === 'ready' && lightsOutTimeRef.current) {
+      // Valid reaction!
+      const elapsed = Math.round(performance.now() - lightsOutTimeRef.current);
+      setReactionTime(elapsed);
+      setGameState('finished');
+
+      setBestTime(prev => {
+        if (!prev || elapsed < prev) {
+          try {
+            localStorage.setItem('f1_reaction_best', String(elapsed));
+          } catch (e) {
+            // ignore
+          }
+          return elapsed;
+        }
+        return prev;
+      });
+    }
+  }, [gameState, startSequence]);
+
+  // Keyboard Spacebar listener to launch
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.code === 'Space' && (gameState === 'arming' || gameState === 'ready')) {
+        e.preventDefault();
+        handleLaunchAttempt();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [gameState, handleLaunchAttempt]);
+
+  // Performance telemetry verdict based on real F1 benchmarks
+  const getVerdict = (ms) => {
+    if (ms < 200) return { title: 'F1 WORLD CHAMPION PACE', color: 'text-purple-400', badge: 'bg-f1Purple/20 text-purple-300 border-f1Purple/40' };
+    if (ms < 260) return { title: 'GRAND PRIX PODIUM REFLEX', color: 'text-f1Teal', badge: 'bg-f1Teal/20 text-f1Teal border-f1Teal/40' };
+    if (ms < 350) return { title: 'GRID QUALIFIER PACE', color: 'text-yellow-400', badge: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40' };
+    return { title: 'PIT LANE PENALTY PACE', color: 'text-gray-400', badge: 'bg-white/10 text-gray-300 border-white/20' };
+  };
+
+  const isLightsOut = gameState === 'ready' || gameState === 'finished';
+
   return (
-    <div className="flex flex-col items-center mb-6">
-      <div className="bg-[#05070B] border-2 border-white/10 p-2 sm:p-3 rounded-md shadow-2xl flex items-center gap-2 sm:gap-4 relative">
-        {/* FIA Logo on Gantry */}
-        <div className="hidden sm:block text-[9px] font-mono font-bold text-gray-500 border-r border-white/10 pr-2 uppercase">
-          STARTING<br />GANTRY
+    <div className="flex flex-col items-center mb-6 w-full max-w-md mx-auto">
+      {/* Starting Lights Box */}
+      <div
+        onClick={handleLaunchAttempt}
+        className="w-full bg-[#05070B] border-2 border-white/15 p-3 sm:p-4 rounded-md shadow-2xl flex flex-col items-center cursor-pointer select-none hover:border-f1Teal/50 transition-all group relative overflow-hidden"
+        title={gameState === 'arming' || gameState === 'ready' ? 'Click to Launch!' : 'Click to Start Reaction Test'}
+      >
+        {/* Top Header */}
+        <div className="w-full flex items-center justify-between pb-2 mb-2.5 border-b border-white/10 text-[9px] font-mono uppercase text-gray-400">
+          <span className="flex items-center gap-1.5 font-bold">
+            <span className="w-1.5 h-1.5 bg-f1Red rounded-xs" />
+            FIA STARTING GANTRY // REFLEX BENCHMARK
+          </span>
+          {bestTime && (
+            <span className="text-yellow-400 font-bold">
+              BEST: {bestTime}ms
+            </span>
+          )}
         </div>
 
         {/* 5 Light Pods */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5">
+        <div className="flex items-center justify-center gap-2 sm:gap-3 py-1">
           {[1, 2, 3, 4, 5].map((pod) => {
-            const isOn = pod <= lightsCount && !lightsOut;
+            const isRed = pod <= lightsCount && !isLightsOut && gameState !== 'jumpstart';
+            const isGreen = gameState === 'ready';
+
             return (
               <div
                 key={pod}
-                className="bg-[#0B0F17] p-1.5 sm:p-2 border border-white/10 rounded flex flex-col items-center gap-1 shadow-inner"
+                className="bg-[#0B0F17] p-2 border border-white/10 rounded flex flex-col items-center gap-1.5 shadow-inner"
               >
                 <div
-                  className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-150 ${
-                    isOn
-                      ? 'bg-f1Red shadow-[0_0_15px_#E10600]'
-                      : 'bg-red-950/40 border border-red-900/40'
+                  className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full transition-all duration-100 ${
+                    isRed
+                      ? 'bg-f1Red shadow-[0_0_16px_#E10600]'
+                      : isGreen
+                      ? 'bg-f1Green shadow-[0_0_16px_#10B981]'
+                      : 'bg-red-950/40 border border-red-900/30'
                   }`}
                 />
                 <div
-                  className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-150 ${
-                    isOn
-                      ? 'bg-f1Red shadow-[0_0_15px_#E10600]'
-                      : 'bg-red-950/40 border border-red-900/40'
+                  className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full transition-all duration-100 ${
+                    isRed
+                      ? 'bg-f1Red shadow-[0_0_16px_#E10600]'
+                      : isGreen
+                      ? 'bg-f1Green shadow-[0_0_16px_#10B981]'
+                      : 'bg-red-950/40 border border-red-900/30'
                   }`}
                 />
               </div>
@@ -67,27 +169,53 @@ const StartingLights = () => {
           })}
         </div>
 
-        {/* Restart Button */}
-        <button
-          onClick={startSequence}
-          className="p-1 text-gray-400 hover:text-f1Teal transition-colors cursor-pointer text-xs ml-1"
-          title="Replay Lights Out Sequence"
-          aria-label="Replay Start Lights"
-        >
-          <FaRedo className="text-xs" />
-        </button>
-      </div>
+        {/* Action Status Prompts */}
+        <div className="mt-3 text-center">
+          {gameState === 'idle' && (
+            <span className="font-hud text-xs text-f1Teal tracking-widest font-bold uppercase group-hover:scale-105 inline-block transition-transform">
+              TAP HERE OR SPACEBAR TO START REACTION TEST
+            </span>
+          )}
 
-      <div className="mt-2 text-center">
-        {lightsOut ? (
-          <span className="font-f1 font-black italic text-xs tracking-widest text-f1Teal animate-pulse uppercase">
-            ⚡ LIGHTS OUT AND AWAY WE GO!
-          </span>
-        ) : (
-          <span className="font-hud text-[10px] tracking-widest text-gray-400 uppercase">
-            GRID SEQUENCE: LIGHTS ILLUMINATING [{lightsCount}/5]
-          </span>
-        )}
+          {gameState === 'arming' && (
+            <span className="font-mono text-xs text-yellow-400 tracking-wider font-bold uppercase">
+              WAIT FOR LIGHTS OUT... DO NOT JUMP START!
+            </span>
+          )}
+
+          {gameState === 'ready' && (
+            <span className="font-f1 font-black italic text-sm tracking-widest text-f1Green uppercase">
+              GO! GO! GO! CLICK NOW!
+            </span>
+          )}
+
+          {gameState === 'jumpstart' && (
+            <div className="flex flex-col items-center gap-1">
+              <span className="font-f1 font-black italic text-xs tracking-wider text-f1Red uppercase">
+                ⚠️ FALSE START! +5 SEC TIME PENALTY
+              </span>
+              <span className="font-hud text-[10px] text-gray-400">
+                You reacted before the lights went out. Click to try again.
+              </span>
+            </div>
+          )}
+
+          {gameState === 'finished' && reactionTime && (
+            <div className="flex flex-col items-center gap-1.5 animate-fadeIn">
+              <div className="flex items-center gap-3">
+                <span className="font-f1 font-black italic text-2xl text-white tracking-wider">
+                  {reactionTime} <span className="text-xs text-gray-400 font-mono">MS</span>
+                </span>
+                <span className={`text-[10px] font-mono font-bold px-2 py-0.5 border rounded-2xs uppercase ${getVerdict(reactionTime).badge}`}>
+                  {getVerdict(reactionTime).title}
+                </span>
+              </div>
+              <span className="font-hud text-[9px] text-gray-400 tracking-wider">
+                CLICK TO RETRY &amp; BEAT YOUR RECORD (SPACEBAR SUPPORTED)
+              </span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -131,16 +259,27 @@ const ShiftLightBar = ({ rpmPercent = 95 }) => {
 const Hero = () => {
   const { data } = usePortfolioData();
   const [raceMode, setRaceMode] = useState('hotlap'); // 'hotlap' | 'race' | 'safety'
+  const [isDrsActive, setIsDrsActive] = useState(false);
 
   if (!data) return null;
   const { personalInfo, socialLinks, typewriterSequences } = data;
 
-  // Dynamic telemetry based on mode
-  const telemetry = {
+  // Dynamic telemetry based on mode & DRS state
+  const baseTelemetry = {
     hotlap: { speed: 352, gear: '8', throttle: '100%', ers: '98%', status: 'HOT LAP PUSH', color: 'text-f1Purple' },
     race:   { speed: 324, gear: '7', throttle: '88%',  ers: '76%', status: 'RACE PACE', color: 'text-f1Teal' },
     safety: { speed: 145, gear: '4', throttle: '35%',  ers: '99%', status: 'SAFETY CAR DELTA', color: 'text-f1Yellow' },
   }[raceMode];
+
+  const telemetry = {
+    ...baseTelemetry,
+    speed: isDrsActive ? baseTelemetry.speed + 22 : baseTelemetry.speed,
+    status: isDrsActive ? 'DRS WING OPEN // MAXIMUM VELOCITY' : baseTelemetry.status,
+  };
+
+  const toggleDrs = () => {
+    setIsDrsActive((prev) => !prev);
+  };
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
@@ -239,7 +378,9 @@ const Hero = () => {
                 ].map((mode) => (
                   <button
                     key={mode.id}
-                    onClick={() => setRaceMode(mode.id)}
+                    onClick={() => {
+                      setRaceMode(mode.id);
+                    }}
                     className={`flex-1 py-1.5 px-2 text-[10px] sm:text-xs font-f1 font-black uppercase tracking-wider rounded-2xs transition-all cursor-pointer ${
                       raceMode === mode.id
                         ? `${mode.color} shadow-lg font-black`
@@ -249,6 +390,25 @@ const Hero = () => {
                     {mode.label}
                   </button>
                 ))}
+              </div>
+
+              {/* DRS Wing Hydraulic Deploy Switch */}
+              <div className="flex items-center gap-3 pt-1">
+                <button
+                  onClick={toggleDrs}
+                  className={`px-3 py-1.5 rounded-2xs border text-xs font-hud font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
+                    isDrsActive
+                      ? 'bg-f1Green text-black border-f1Green shadow-[0_0_20px_rgba(16,185,129,0.6)] animate-pulse'
+                      : 'bg-white/5 text-gray-300 border-white/15 hover:border-f1Teal hover:text-white'
+                  }`}
+                  title="Click to Deploy DRS Rear Wing Hydraulic Flap"
+                >
+                  <span className={`w-2 h-2 rounded-full ${isDrsActive ? 'bg-black' : 'bg-f1Green'}`} />
+                  <span>{isDrsActive ? 'DRS DEPLOYED (+22 KM/H)' : 'DEPLOY DRS WING'}</span>
+                </button>
+                <span className="text-[10px] font-mono text-gray-400">
+                  {isDrsActive ? 'DRS FLAP: OPEN' : 'REDUCTION IN DRAG ZONE'}
+                </span>
               </div>
 
               {/* Pit Radio Transmission Box */}

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { usePortfolioData } from '../context/PortfolioDataContext';
-import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
+import { useLivery } from '../context/LiveryContext';
+import { FaExternalLinkAlt, FaGithub, FaTimes, FaTachometerAlt, FaLayerGroup, FaCheckCircle } from 'react-icons/fa';
 
 const CIRCUITS = [
   { gp: 'MONACO GP', track: 'Circuit de Monaco', country: 'MC', laps: 78, length: '3.337 km' },
@@ -46,7 +48,9 @@ const TrackSilhouette = ({ index }) => {
 
 const Projects = () => {
   const { data } = usePortfolioData();
+  const { livery } = useLivery();
   const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const [activeTelemetryProject, setActiveTelemetryProject] = useState(null);
 
   if (!data) return null;
   const { projects } = data;
@@ -172,8 +176,16 @@ const Projects = () => {
                       </span>
                     </div>
 
-                    <h3 className="font-f1 font-black italic text-xl text-white uppercase group-hover:text-f1Teal transition-colors mb-2">
-                      {project.title}
+                    <h3
+                      onClick={() => {
+                        setActiveTelemetryProject(project);
+                      }}
+                      className="font-f1 font-black italic text-xl text-white uppercase group-hover:text-f1Teal transition-colors mb-2 cursor-pointer flex items-center justify-between"
+                    >
+                      <span>{project.title}</span>
+                      <span className="text-[10px] font-mono font-normal text-gray-500 group-hover:text-f1Teal transition-colors">
+                        SPECS ↗
+                      </span>
                     </h3>
 
                     <p className="font-sans text-xs text-gray-300 leading-relaxed line-clamp-3 mb-4">
@@ -208,32 +220,42 @@ const Projects = () => {
                     </div>
 
                     {/* Action Links */}
-                    <div className="pt-3 border-t border-white/10 flex items-center justify-between">
-                      {project.github ? (
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 font-f1 font-bold text-xs uppercase text-gray-300 hover:text-f1Teal transition-colors"
-                        >
-                          <FaGithub className="text-sm" />
-                          <span>SOURCE CODE (GITHUB)</span>
-                        </a>
-                      ) : (
-                        <span className="font-mono text-[10px] text-gray-500">PRIVATE REPO</span>
-                      )}
+                    <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+                      <button
+                        onClick={() => {
+                          setActiveTelemetryProject(project);
+                        }}
+                        className="font-hud text-[10px] font-bold uppercase tracking-wider text-f1Teal hover:underline cursor-pointer flex items-center gap-1"
+                      >
+                        <FaTachometerAlt className="text-[10px]" />
+                        <span>TELEMETRY SPECS</span>
+                      </button>
 
-                      {(project.demo || project.liveLink || project.link) ? (
-                        <a
-                          href={project.demo || project.liveLink || project.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-f1-primary text-[10px] py-1.5 px-3"
-                        >
-                          <span>LIVE DEMO (VISIT)</span>
-                          <FaExternalLinkAlt className="text-[9px]" />
-                        </a>
-                      ) : null}
+                      <div className="flex items-center gap-2">
+                        {project.github && (
+                          <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white rounded-2xs border border-white/10 transition-colors"
+                            title="View GitHub Source Code"
+                          >
+                            <FaGithub className="text-xs" />
+                          </a>
+                        )}
+
+                        {(project.demo || project.liveLink || project.link) && (
+                          <a
+                            href={project.demo || project.liveLink || project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-f1-primary text-[10px] py-1.5 px-3"
+                          >
+                            <span>LIVE DEMO</span>
+                            <FaExternalLinkAlt className="text-[9px]" />
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -244,6 +266,147 @@ const Projects = () => {
         </div>
 
       </div>
+
+      {/* ── Race Engineering Telemetry Spec Sheet Modal ── */}
+      <AnimatePresence>
+        {activeTelemetryProject && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
+            onClick={() => setActiveTelemetryProject(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-2xl bg-[#0B0F17]/98 backdrop-blur-xl border border-white/20 f1-cut-lg shadow-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto relative"
+              style={{ borderColor: livery.primaryColor }}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setActiveTelemetryProject(null)}
+                className="absolute top-5 right-5 p-2 text-gray-400 hover:text-white transition-colors cursor-pointer"
+                aria-label="Close Project Telemetry"
+              >
+                <FaTimes size={18} />
+              </button>
+
+              {/* Top FIA Badge */}
+              <div className="flex items-center gap-2 mb-2">
+                <span className="font-mono text-[9px] font-bold px-2 py-0.5 rounded-2xs bg-f1Red text-white uppercase tracking-wider">
+                  FIA TELEMETRY DOSSIER
+                </span>
+                <span className="font-hud text-[10px] uppercase tracking-widest text-gray-400">
+                  {activeTelemetryProject.category || 'FULL STACK SPEC'}
+                </span>
+              </div>
+
+              {/* Title */}
+              <h2 className="font-f1 font-black italic text-2xl sm:text-3xl text-white uppercase mb-3">
+                {activeTelemetryProject.title}
+              </h2>
+
+              <p className="font-sans text-xs sm:text-sm text-gray-300 leading-relaxed mb-6 border-b border-white/10 pb-4">
+                {activeTelemetryProject.description}
+              </p>
+
+              {/* Telemetry Benchmarks Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                <div className="bg-[#05070B] border border-white/10 p-3 rounded-2xs">
+                  <span className="text-[9px] font-mono text-gray-500 uppercase block">PERFORMANCE</span>
+                  <span className="font-racing text-lg font-black text-f1Green">99/100</span>
+                </div>
+                <div className="bg-[#05070B] border border-white/10 p-3 rounded-2xs">
+                  <span className="text-[9px] font-mono text-gray-500 uppercase block">ACCESSIBILITY</span>
+                  <span className="font-racing text-lg font-black text-f1Teal">100%</span>
+                </div>
+                <div className="bg-[#05070B] border border-white/10 p-3 rounded-2xs">
+                  <span className="text-[9px] font-mono text-gray-500 uppercase block">FRAME BUDGET</span>
+                  <span className="font-racing text-lg font-black text-white">&lt;16 MS</span>
+                </div>
+                <div className="bg-[#05070B] border border-white/10 p-3 rounded-2xs">
+                  <span className="text-[9px] font-mono text-gray-500 uppercase block">DEPLOY STATUS</span>
+                  <span className="font-mono text-xs font-bold text-yellow-400 mt-1 block">VERIFIED P1</span>
+                </div>
+              </div>
+
+              {/* Architecture & Key Subsystems */}
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-2 font-hud text-xs text-white uppercase tracking-wider font-bold">
+                  <FaLayerGroup className="text-f1Teal" />
+                  <span>DEPLOYED CHASSIS &amp; POWER COMPONENTS</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {activeTelemetryProject.technologies?.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2.5 py-1 bg-white/5 border border-white/15 text-xs font-mono text-white rounded-2xs flex items-center gap-1.5"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: livery.primaryColor }} />
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Key Engineering Features */}
+              {activeTelemetryProject.keyFeatures && activeTelemetryProject.keyFeatures.length > 0 && (
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-2 font-hud text-xs text-white uppercase tracking-wider font-bold">
+                    <FaCheckCircle className="text-f1Green" />
+                    <span>ENGINEERING HIGHLIGHTS &amp; TELEMETRY</span>
+                  </div>
+                  <div className="space-y-2">
+                    {activeTelemetryProject.keyFeatures.map((kf, i) => (
+                      <div key={i} className="flex items-start gap-2 text-xs font-sans text-gray-300 bg-white/[0.02] p-2.5 rounded-2xs border border-white/5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-f1Red mt-1.5 shrink-0" />
+                        <span>{kf}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Modal Action Footer */}
+              <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  {activeTelemetryProject.github && (
+                    <a
+                      href={activeTelemetryProject.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-f1-outline text-xs py-2 px-3 flex items-center gap-1.5"
+                    >
+                      <FaGithub className="text-sm" />
+                      <span>SOURCE CODE</span>
+                    </a>
+                  )}
+
+                  {(activeTelemetryProject.demo || activeTelemetryProject.liveLink || activeTelemetryProject.link) && (
+                    <a
+                      href={activeTelemetryProject.demo || activeTelemetryProject.liveLink || activeTelemetryProject.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-f1-primary text-xs py-2 px-4 flex items-center gap-1.5"
+                    >
+                      <span>LAUNCH APPLICATION</span>
+                      <FaExternalLinkAlt className="text-[10px]" />
+                    </a>
+                  )}
+                </div>
+
+                <button
+                  onClick={() => setActiveTelemetryProject(null)}
+                  className="font-mono text-xs text-gray-500 hover:text-white uppercase transition-colors cursor-pointer"
+                >
+                  DISMISS SPECS
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

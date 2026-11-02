@@ -3,51 +3,125 @@ import { usePortfolioData } from '../context/PortfolioDataContext';
 import { getIcon } from '../utils/getIcon';
 import { FaCogs, FaBolt, FaDatabase, FaTools, FaCheck } from 'react-icons/fa';
 
-/* ── Interactive Telemetry Graph (Throttle vs Brake) ── */
-const TelemetryGraph = () => (
-  <div className="bg-[#05070B] border border-white/10 p-4 rounded-sm">
-    <div className="flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-      <span className="flex items-center gap-2">
-        <span className="w-2.5 h-1 bg-f1Green inline-block" /> THROTTLE (FRONTEND VELOCITY)
-      </span>
-      <span className="flex items-center gap-2">
-        <span className="w-2.5 h-1 bg-f1Red inline-block" /> BRAKE / LATENCY CONTROL
-      </span>
-      <span className="text-f1Teal font-bold">TELEMETRY TRACE: TURN 1 TO TURN 14</span>
-    </div>
-    
-    <div className="h-28 w-full relative">
-      <svg viewBox="0 0 500 100" className="w-full h-full preserve-3d" fill="none">
-        {/* Background Grid Lines */}
-        <line x1="0" y1="25" x2="500" y2="25" stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" />
-        <line x1="0" y1="50" x2="500" y2="50" stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" />
-        <line x1="0" y1="75" x2="500" y2="75" stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" />
+/* ── Interactive Live Telemetry Graph with Turn Selector ── */
+const TelemetryGraph = () => {
+  const [activeTurn, setActiveTurn] = useState(1);
+  const [hoverData, setHoverData] = useState(null);
 
-        {/* Throttle Trace (Green Line) */}
-        <path
-          d="M 0 80 Q 50 10, 100 20 T 180 85 T 260 15 T 350 70 T 420 15 L 500 20"
-          stroke="#10B981"
-          strokeWidth="2.5"
-          fill="none"
-          strokeLinecap="round"
-        />
+  const turnPoints = [
+    { turn: 1, name: 'Sainte Dévote', speed: '115 km/h', gear: '2nd', throttle: '45%', brake: '85%' },
+    { turn: 4, name: 'Casino Square', speed: '142 km/h', gear: '3rd', throttle: '65%', brake: '40%' },
+    { turn: 6, name: 'Grand Hotel Hairpin', speed: '48 km/h', gear: '1st', throttle: '20%', brake: '95%' },
+    { turn: 10, name: 'Tunnel Exit Chicanes', speed: '285 km/h', gear: '7th', throttle: '100%', brake: '10%' },
+    { turn: 12, name: 'Tabac Corner', speed: '198 km/h', gear: '4th', throttle: '80%', brake: '30%' },
+    { turn: 14, name: 'Swimming Pool Chicane', speed: '210 km/h', gear: '5th', throttle: '88%', brake: '25%' },
+  ];
 
-        {/* Brake Trace (Red Line) */}
-        <path
-          d="M 0 95 L 40 95 L 45 30 L 60 95 L 160 95 L 170 20 L 185 95 L 320 95 L 330 25 L 345 95 L 500 95"
-          stroke="#E10600"
-          strokeWidth="2"
-          fill="none"
-          strokeLinecap="round"
-        />
-      </svg>
-      {/* Speed Trap Point */}
-      <div className="absolute top-2 right-6 bg-[#0E131B] border border-f1Teal/40 px-2 py-0.5 rounded text-[10px] font-mono text-f1Teal font-bold shadow-lg">
-        SPEED TRAP: 351.4 KM/H
+  const currentPoint = hoverData || turnPoints.find(t => t.turn === activeTurn) || turnPoints[0];
+
+  return (
+    <div className="bg-[#05070B] border border-white/10 p-4 rounded-sm shadow-xl">
+      <div className="flex flex-wrap items-center justify-between text-xs font-mono text-gray-400 mb-3 gap-2">
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-1.5">
+            <span className="w-2.5 h-1 bg-f1Green inline-block" />
+            <span className="text-white font-bold">THROTTLE (VELOCITY)</span>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-2.5 h-1 bg-f1Red inline-block" />
+            <span className="text-white font-bold">BRAKE (LATENCY)</span>
+          </span>
+        </div>
+        <span className="text-f1Teal font-bold uppercase tracking-wider text-[11px]">
+          INTERACTIVE TELEMETRY TRACE: SECTOR 1 TO SECTOR 3
+        </span>
+      </div>
+
+      <div className="h-28 w-full relative group">
+        <svg viewBox="0 0 500 100" className="w-full h-full preserve-3d" fill="none">
+          {/* Background Grid Lines */}
+          <line x1="0" y1="25" x2="500" y2="25" stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" />
+          <line x1="0" y1="50" x2="500" y2="50" stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" />
+          <line x1="0" y1="75" x2="500" y2="75" stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" />
+
+          {/* Throttle Trace (Green Line) */}
+          <path
+            d="M 0 80 Q 50 10, 100 20 T 180 85 T 260 15 T 350 70 T 420 15 L 500 20"
+            stroke="#10B981"
+            strokeWidth="2.5"
+            fill="none"
+            strokeLinecap="round"
+          />
+
+          {/* Brake Trace (Red Line) */}
+          <path
+            d="M 0 95 L 40 95 L 45 30 L 60 95 L 160 95 L 170 20 L 185 95 L 320 95 L 330 25 L 345 95 L 500 95"
+            stroke="#E10600"
+            strokeWidth="2"
+            fill="none"
+            strokeLinecap="round"
+          />
+
+          {/* Turn Hotspots on the Graph */}
+          {[
+            { cx: 45, turn: 1 },
+            { cx: 100, turn: 4 },
+            { cx: 170, turn: 6 },
+            { cx: 260, turn: 10 },
+            { cx: 330, turn: 12 },
+            { cx: 420, turn: 14 },
+          ].map((pt) => {
+            const isSelected = activeTurn === pt.turn;
+            return (
+              <g
+                key={pt.turn}
+                className="cursor-pointer"
+                onClick={() => setActiveTurn(pt.turn)}
+                onMouseEnter={() => setHoverData(turnPoints.find(t => t.turn === pt.turn))}
+                onMouseLeave={() => setHoverData(null)}
+              >
+                <circle
+                  cx={pt.cx}
+                  cy="20"
+                  r={isSelected ? "6" : "4"}
+                  className={`transition-all duration-200 ${isSelected ? 'fill-f1Teal stroke-white stroke-2' : 'fill-white/60 hover:fill-f1Teal'}`}
+                />
+                <text x={pt.cx - 6} y="40" fill="#9CA3AF" fontSize="8" fontFamily="monospace">
+                  T{pt.turn}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* Speed Trap Overlay */}
+        <div className="absolute top-2 right-4 bg-[#0E131B] border border-f1Teal/40 px-2.5 py-1 rounded text-[10px] font-mono text-f1Teal font-bold shadow-lg flex items-center gap-2">
+          <span>SPEED TRAP: 351.4 KM/H</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-f1Green animate-pulse" />
+        </div>
+      </div>
+
+      {/* Selected Turn Readout telemetry card */}
+      <div className="mt-3 pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+        <div className="flex items-center gap-2">
+          <span className="bg-f1Red text-white px-2 py-0.5 rounded-2xs font-bold text-[10px]">
+            TURN {currentPoint.turn}
+          </span>
+          <span className="font-f1 font-black italic text-white uppercase tracking-wider">
+            {currentPoint.name}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-4 text-[11px] text-gray-300">
+          <span>ENTRY VELOCITY: <strong className="text-white">{currentPoint.speed}</strong></span>
+          <span>GEAR: <strong className="text-f1Red font-bold">{currentPoint.gear}</strong></span>
+          <span>THROTTLE: <strong className="text-f1Green">{currentPoint.throttle}</strong></span>
+          <span>BRAKE: <strong className="text-f1Red">{currentPoint.brake}</strong></span>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Skills = () => {
   const { data } = usePortfolioData();

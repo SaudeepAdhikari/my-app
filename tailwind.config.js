@@ -11,10 +11,10 @@ module.exports = {
         primary: '#ffffff',
         secondary: '#94A3B8',
         f1Red: '#E10600',        // Official FIA Formula 1 Red
-        f1Teal: '#00D2BE',       // Petronas Mercedes Teal
-        accent: '#00D2BE',       // Primary motorsport accent
-        accentHover: '#00b5a3',
-        f1Purple: '#B138DD',     // F1 Fastest Lap Purple
+        f1Teal: 'var(--f1-teal, #00D2BE)',       // Dynamic Constructor Primary Accent
+        accent: 'var(--f1-teal, #00D2BE)',       // Primary motorsport accent
+        accentHover: 'var(--f1-teal, #00b5a3)',
+        f1Purple: 'var(--f1-purple, #B138DD)',   // F1 Fastest Lap Purple
         f1Yellow: '#F59E0B',     // Yellow Flag / Medium Tyre
         f1Green: '#10B981',      // Green Flag / Personal Best
         f1Silver: '#D1D5DB',     // Silver Arrow Metallic

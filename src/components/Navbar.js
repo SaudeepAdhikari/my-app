@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePortfolioData } from '../context/PortfolioDataContext';
+import { useLivery } from '../context/LiveryContext';
+import LiverySwitcher from './LiverySwitcher';
+import TrackWeatherWidget from './TrackWeatherWidget';
 import { FaFlag, FaBroadcastTower } from 'react-icons/fa';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
 
@@ -17,6 +20,7 @@ const navLinks = [
 
 const Navbar = () => {
   const { data } = usePortfolioData();
+  const { livery } = useLivery();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActive] = useState('hero');
@@ -82,15 +86,7 @@ const Navbar = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="flex items-center gap-1 text-purple-300">
-                <span className="w-2 h-2 rounded-sm bg-f1Purple" /> S1: <strong>24.128s</strong> (PURPLE)
-              </span>
-              <span className="flex items-center gap-1 text-teal-300">
-                <span className="w-2 h-2 rounded-sm bg-f1Teal" /> S2: <strong>28.340s</strong> (PB)
-              </span>
-              <span className="flex items-center gap-1 text-purple-300">
-                <span className="w-2 h-2 rounded-sm bg-f1Purple" /> S3: <strong>25.892s</strong> (PURPLE)
-              </span>
+              <TrackWeatherWidget />
               <span className="bg-f1Teal/20 text-f1Teal border border-f1Teal/40 px-2 py-0.5 rounded-sm font-bold text-[10px]">
                 DRS ACTIVE
               </span>
@@ -122,8 +118,8 @@ const Navbar = () => {
                 <span className="font-f1 font-black italic text-lg sm:text-xl text-white tracking-wider leading-none group-hover:text-f1Teal transition-colors">
                   {name.toUpperCase()}
                 </span>
-                <span className="font-hud text-[9px] tracking-[0.25em] text-f1Teal uppercase font-semibold">
-                  MERCEDES SPEC // DEV
+                <span className="font-hud text-[9px] tracking-[0.25em] uppercase font-semibold transition-colors" style={{ color: livery.primaryColor }}>
+                  {livery.specText}
                 </span>
               </div>
             </button>
@@ -160,8 +156,11 @@ const Navbar = () => {
               })}
             </nav>
 
-            {/* Action Buttons: Pit Radio & Mobile Menu Toggle */}
-            <div className="flex items-center gap-3">
+            {/* Action Buttons: Livery Switcher, Pit Radio & Mobile Menu Toggle */}
+            <div className="flex items-center gap-2 sm:gap-3">
+
+              <LiverySwitcher />
+
               <button
                 onClick={() => scrollTo('contact')}
                 className="hidden sm:inline-flex items-center gap-2 font-f1 font-black italic uppercase text-xs tracking-wider px-4 py-2 bg-gradient-to-r from-f1Red to-red-700 text-white clip-path-slant hover:from-red-600 hover:to-f1Red shadow-lg shadow-f1Red/25 transition-all duration-300"
