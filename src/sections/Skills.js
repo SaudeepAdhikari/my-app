@@ -268,7 +268,7 @@ const Skills = () => {
                   {current.tech.map((t) => (
                     <span
                       key={t}
-                      className="px-3 py-1.5 bg-[#05070B] border border-white/15 text-white font-mono text-xs font-bold rounded-2xs flex items-center gap-1.5 shadow-sm"
+                      className="skill-badge-glow px-3 py-1.5 bg-[#05070B] border border-white/15 text-white font-mono text-xs font-bold rounded-2xs flex items-center gap-1.5 shadow-sm transition-all duration-300 cursor-default"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-f1Teal" />
                       {t}

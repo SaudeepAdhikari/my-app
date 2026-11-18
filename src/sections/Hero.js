@@ -297,6 +297,22 @@ const Hero = () => {
       </Helmet>
 
       <section id="hero" className="relative min-h-screen pt-32 pb-20 flex flex-col justify-center overflow-hidden">
+        {/* Animated Speed Lines Background */}
+        <div className="speed-lines-container">
+          {[12, 28, 44, 60, 72, 85, 20, 55, 38, 90].map((top, i) => (
+            <div
+              key={i}
+              className="speed-line"
+              style={{
+                top: `${top}%`,
+                width: `${120 + i * 40}px`,
+                animationDuration: `${3 + i * 0.7}s`,
+                animationDelay: `${i * 0.5}s`,
+              }}
+            />
+          ))}
+        </div>
+
         {/* Massive Background Stencil Race Number */}
         <div className="absolute right-4 lg:right-24 top-1/2 -translate-y-1/2 font-f1 font-black italic text-[180px] sm:text-[280px] lg:text-[420px] text-white/[0.03] select-none pointer-events-none leading-none z-0">
           07
@@ -338,7 +354,7 @@ const Hero = () => {
                 </div>
                 <h1 className="text-5xl sm:text-6xl md:text-7xl xl:text-[82px] font-f1 font-black italic uppercase tracking-tight text-white leading-[1.08] overflow-visible">
                   <span className="inline-block pr-6">SAUDEEP</span><br />
-                  <span className="inline-block pr-8 pb-2 text-transparent bg-clip-text bg-gradient-to-r from-f1Red via-f1Teal to-white drop-shadow-[0_4px_12px_rgba(225,6,0,0.35)]">
+                  <span className="hero-gradient-text inline-block pr-8 pb-2 drop-shadow-[0_4px_12px_rgba(225,6,0,0.35)]">
                     ADHIKARI
                   </span>
                 </h1>

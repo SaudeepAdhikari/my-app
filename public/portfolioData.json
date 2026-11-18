@@ -6,9 +6,10 @@
     "tagline": "Crafting digital experiences that blend creativity with functionality.",
     "profileImage": "/assets/profile.jpg",
     "resumePath": "/Saudeep_Adhikari_Resume.pdf",
-    "resumeLastUpdated": "Last updated August 2026",
+    "resumeLastUpdated": "Last updated November 2026",
     "location": "Nepal",
     "email": "saudeepadhikari543@gmail.com",
+    "Mobile": "+977 9842064469",
     "emailjs": {
       "serviceId": "service_dvxs0i8",
       "templateId": "template_xytrhan",
@@ -219,11 +220,19 @@
       "title": "Room Finding System",
       "description": "A room finding platform that helps users discover available rooms based on city and preferred locality.",
       "image": "/assets/roomfinder.png",
-      "technologies": ["React", "Node.js", "MongoDB"],
+      "technologies": [
+        "React",
+        "Node.js",
+        "MongoDB"
+      ],
       "github": "https://github.com/SaudeepAdhikari/room-finder",
       "demo": "https://room-finder-client-qfa1.vercel.app/",
       "category": "Full Stack",
-      "keyFeatures": ["City & locality search", "Curated room listings", "Responsive MERN architecture"],
+      "keyFeatures": [
+        "City & locality search",
+        "Curated room listings",
+        "Responsive MERN architecture"
+      ],
       "status": "Live",
       "year": "2024",
       "featured": true
@@ -232,11 +241,18 @@
       "title": "Recipe Finding System",
       "description": "A recipe discovery app that helps users find recipes based on ingredients and dietary preferences.",
       "image": "/assets/recipe.png",
-      "technologies": ["React", "Node.js"],
+      "technologies": [
+        "React",
+        "Node.js"
+      ],
       "github": "https://github.com/SaudeepAdhikari/Recipe-finding-system",
       "demo": "https://recipe-finding-system.vercel.app/",
       "category": "Full Stack",
-      "keyFeatures": ["Ingredient-based discovery", "Dietary preference filters", "Fast recipe browsing UX"],
+      "keyFeatures": [
+        "Ingredient-based discovery",
+        "Dietary preference filters",
+        "Fast recipe browsing UX"
+      ],
       "status": "Live",
       "year": "2024",
       "featured": true
@@ -245,10 +261,18 @@
       "title": "Portfolio Website",
       "description": "A modern, responsive portfolio website built with React, custom CSS, and EmailJS integration for contact.",
       "image": "/assets/Logo.png",
-      "technologies": ["React", "CSS", "EmailJS"],
+      "technologies": [
+        "React",
+        "CSS",
+        "EmailJS"
+      ],
       "github": "https://github.com/SaudeepAdhikari/Website",
       "category": "Frontend",
-      "keyFeatures": ["Responsive showcase layout", "Contact form integration", "Performance-focused React build"],
+      "keyFeatures": [
+        "Responsive showcase layout",
+        "Contact form integration",
+        "Performance-focused React build"
+      ],
       "status": "Completed",
       "year": "2025",
       "featured": false
@@ -257,10 +281,18 @@
       "title": "E-Commerce Platform",
       "description": "A full-stack e-commerce platform with product management, cart, and payment integration.",
       "image": "/assets/ecommerse.jpg",
-      "technologies": ["React", "Node.js", "MongoDB"],
+      "technologies": [
+        "React",
+        "Node.js",
+        "MongoDB"
+      ],
       "github": "https://github.com/SaudeepAdhikari/E-commerce",
       "category": "Full Stack",
-      "keyFeatures": ["Product catalog management", "Shopping cart flow", "Payment-ready backend"],
+      "keyFeatures": [
+        "Product catalog management",
+        "Shopping cart flow",
+        "Payment-ready backend"
+      ],
       "status": "Completed",
       "year": "2024",
       "featured": false
@@ -269,10 +301,18 @@
       "title": "Parking Management System",
       "description": "A web application for managing parking spaces, bookings, and payments with real-time availability.",
       "image": "/assets/Parkinglogo.png",
-      "technologies": ["HTML", "CSS", "JS"],
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JS"
+      ],
       "github": "https://github.com/SaudeepAdhikari/Parking-system",
       "category": "Web App",
-      "keyFeatures": ["Real-time slot tracking", "Booking management", "Payment workflow support"],
+      "keyFeatures": [
+        "Real-time slot tracking",
+        "Booking management",
+        "Payment workflow support"
+      ],
       "status": "Completed",
       "year": "2023",
       "featured": false
@@ -281,10 +321,18 @@
       "title": "Weather App",
       "description": "A weather application that provides real-time weather updates using OpenWeatherMap API.",
       "image": "/assets/weather.jpeg",
-      "technologies": ["React", "API", "CSS"],
+      "technologies": [
+        "React",
+        "API",
+        "CSS"
+      ],
       "github": "https://github.com/SaudeepAdhikari/Weather-App",
       "category": "Frontend",
-      "keyFeatures": ["Live API weather data", "Clean forecast UI", "Responsive mobile experience"],
+      "keyFeatures": [
+        "Live API weather data",
+        "Clean forecast UI",
+        "Responsive mobile experience"
+      ],
       "status": "Completed",
       "year": "2023",
       "featured": false
@@ -293,10 +341,18 @@
       "title": "Resturant Reservation System",
       "description": "A Resturant Reservation System that helps users to reserve a table in a resturant.",
       "image": "/assets/Resturantreservation.png",
-      "technologies": ["React", "Node.js", "MongoDB"],
+      "technologies": [
+        "React",
+        "Node.js",
+        "MongoDB"
+      ],
       "github": "https://github.com/SaudeepAdhikari/Restaurant-Reservation-System",
       "category": "Full Stack",
-      "keyFeatures": ["Table reservation flow", "Restaurant-facing management", "Full-stack booking system"],
+      "keyFeatures": [
+        "Table reservation flow",
+        "Restaurant-facing management",
+        "Full-stack booking system"
+      ],
       "status": "Completed",
       "year": "2024",
       "featured": false
@@ -305,10 +361,17 @@
       "title": "Tournament Management System",
       "description": "A Tournament Management System that helps users to manage and organize tournaments efficiently, create tie sheets, keep track of the winners.",
       "image": "/assets/TournamentSys.png",
-      "technologies": ["React", "Node.js"],
+      "technologies": [
+        "React",
+        "Node.js"
+      ],
       "github": "https://github.com/SaudeepAdhikari/Tournament-Management-system",
       "category": "Full Stack",
-      "keyFeatures": ["Bracket & tie-sheet generation", "Winner progression tracking", "Tournament admin dashboard"],
+      "keyFeatures": [
+        "Bracket & tie-sheet generation",
+        "Winner progression tracking",
+        "Tournament admin dashboard"
+      ],
       "status": "Completed",
       "year": "2024",
       "featured": false
@@ -607,11 +670,10 @@
     },
     {
       "id": 2,
-      "role": "Web Developer Intern(frontend)",
-      "company": "Intersect Info Developers",
-      "period": "2026-present",
-      "description": "Building a Next.js 14 web application using TypeScript, Tailwind CSS, and Leaflet.js, implementing edit approval workflows, PII masking by government tier, and interactive geographic data visualization."
+      "role": "Frontend Intern",
+      "company": "Intersect Info Developers Pvt. Ltd.",
+      "period": "May 2026 - September 2026",
+      "description": "Completed a 4-month internship contributing to frontend development using Next.js. Worked on building responsive interfaces and web application features under the guidance of senior developers."
     }
   ]
-  
 }

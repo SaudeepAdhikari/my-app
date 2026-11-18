@@ -16,6 +16,10 @@ import AccessibilityPanel from './components/AccessibilityPanel';
 import CommandPalette from './components/CommandPalette';
 import EasterEgg from './components/EasterEgg';
 import GlobalSEO from './components/GlobalSEO';
+import TechMarquee from './components/TechMarquee';
+import F1SectionDivider from './components/F1SectionDivider';
+import ScrollReveal from './components/ScrollReveal';
+import BackToTop from './components/BackToTop';
 import { PortfolioDataProvider, usePortfolioData } from './context/PortfolioDataContext';
 import { LiveryProvider } from './context/LiveryContext';
 
@@ -40,17 +44,58 @@ function AppContent() {
 
       <main id="main-content" role="main">
         <Hero />
-        <About />
-        <Skills />
-        <Services />
-        <Projects />
-        <Resume />
-        <Blog />
-        <ResumeDownload />
-        <Contact />
+
+        {/* Tech Marquee between Hero and About */}
+        <TechMarquee />
+        <F1SectionDivider />
+
+        <ScrollReveal>
+          <About />
+        </ScrollReveal>
+
+        <F1SectionDivider />
+
+        <ScrollReveal delay={80}>
+          <Skills />
+        </ScrollReveal>
+
+        <F1SectionDivider />
+
+        <ScrollReveal delay={80}>
+          <Services />
+        </ScrollReveal>
+
+        <F1SectionDivider />
+
+        <ScrollReveal delay={80}>
+          <Projects />
+        </ScrollReveal>
+
+        <F1SectionDivider />
+
+        <ScrollReveal delay={80}>
+          <Resume />
+        </ScrollReveal>
+
+        <F1SectionDivider />
+
+        <ScrollReveal delay={80}>
+          <Blog />
+        </ScrollReveal>
+
+        <ScrollReveal delay={80}>
+          <ResumeDownload />
+        </ScrollReveal>
+
+        <F1SectionDivider />
+
+        <ScrollReveal delay={80}>
+          <Contact />
+        </ScrollReveal>
       </main>
 
       <Footer />
+      <BackToTop />
     </div>
   );
 }

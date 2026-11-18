@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import emailjs from 'emailjs-com';
-import { FaBroadcastTower, FaEnvelope, FaMapMarkerAlt, FaFlag, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import { FaBroadcastTower, FaEnvelope, FaMapMarkerAlt, FaFlag, FaCheckCircle, FaExclamationCircle, FaPhoneAlt } from 'react-icons/fa';
 import { usePortfolioData } from '../context/PortfolioDataContext';
 import { getIcon } from '../utils/getIcon';
 
@@ -231,6 +231,24 @@ const Contact = () => {
                     </a>
                   </div>
                 </div>
+
+                {/* Mobile / Phone Comms */}
+                {(personalInfo.Mobile || personalInfo.mobile || personalInfo.phone) && (
+                  <div className="flex items-start gap-3 p-3 bg-[#05070B] border border-white/5 rounded-2xs">
+                    <div className="p-2 bg-f1Red/15 text-f1Red rounded-2xs shrink-0 mt-0.5">
+                      <FaPhoneAlt />
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-gray-500 uppercase block">TEAM RADIO DIRECT LINE</span>
+                      <a
+                        href={`tel:${(personalInfo.Mobile || personalInfo.mobile || personalInfo.phone).replace(/\s+/g, '')}`}
+                        className="text-white hover:text-f1Teal font-bold transition-colors"
+                      >
+                        {personalInfo.Mobile || personalInfo.mobile || personalInfo.phone}
+                      </a>
+                    </div>
+                  </div>
+                )}
 
                 {/* Location */}
                 <div className="flex items-start gap-3 p-3 bg-[#05070B] border border-white/5 rounded-2xs">

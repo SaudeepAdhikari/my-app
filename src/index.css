@@ -274,3 +274,117 @@
 .glow-f1-teal {
   animation: pulseGlow 2s ease-in-out infinite;
 }
+
+/* ── Animated Gradient Hero Text ──────────────────────────── */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero-gradient-text {
+  background: linear-gradient(
+    270deg,
+    #E10600,
+    #00D2BE,
+    #B138DD,
+    #EAB308,
+    #00D2BE,
+    #E10600
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 6s ease infinite;
+}
+
+/* ── Speed Lines Background ───────────────────────────────── */
+@keyframes speedLine {
+  0%   { transform: translateX(-100%) scaleX(0.5); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateX(100vw) scaleX(1.5); opacity: 0; }
+}
+
+.speed-lines-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.speed-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 210, 190, 0.4), transparent);
+  animation: speedLine linear infinite;
+}
+
+/* ── Skill Badge Glow ─────────────────────────────────────── */
+.skill-badge-glow:hover {
+  box-shadow: 0 0 18px rgba(0, 210, 190, 0.5), 0 0 36px rgba(0, 210, 190, 0.2);
+  border-color: rgba(0, 210, 190, 0.6) !important;
+  transform: translateY(-4px) scale(1.06);
+}
+
+/* ── Marquee Strip ────────────────────────────────────────── */
+@keyframes marqueeScroll {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marqueeScroll 28s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Section Divider ──────────────────────────────────────── */
+.f1-section-divider {
+  position: relative;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #E10600 20%, #00D2BE 50%, #B138DD 80%, transparent);
+  margin: 0;
+}
+
+.f1-section-divider::before {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+  background: inherit;
+  filter: blur(6px);
+  opacity: 0.5;
+}
+
+/* ── Custom Cursor ────────────────────────────────────────── */
+@keyframes cursorPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  50%       { transform: translate(-50%, -50%) scale(1.4); opacity: 0.4; }
+}
+
+/* ── Scroll Reveal ────────────────────────────────────────── */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Float Glow Animation (cards, badges) ─────────────────── */
+@keyframes floatGlow {
+  0%, 100% { box-shadow: 0 4px 24px rgba(0, 210, 190, 0.1); transform: translateY(0); }
+  50%       { box-shadow: 0 8px 36px rgba(0, 210, 190, 0.25); transform: translateY(-4px); }
+}
+
+.float-glow {
+  animation: floatGlow 4s ease-in-out infinite;
+}

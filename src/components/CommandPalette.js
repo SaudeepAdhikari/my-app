@@ -48,7 +48,7 @@ const CommandPalette = () => {
   const handleDownloadCV = () => {
     const resumePath = data?.personalInfo?.resumePath;
     if (resumePath) {
-      window.open(resumePath, '_blank');
+      window.open(resumePath, '_blank', 'noopener,noreferrer');
     }
     setIsOpen(false);
   };

@@ -114,7 +114,7 @@ const Projects = () => {
             return (
               <div
                 key={project.title}
-                className="f1-card group flex flex-col justify-between overflow-hidden border border-white/10 hover:border-f1Teal/50 transition-all duration-300"
+                className="f1-card group flex flex-col justify-between overflow-hidden border border-white/10 hover:border-f1Teal/50 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_30px_-10px_rgba(0,210,190,0.25)]"
                 style={{ clipPath: 'polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)' }}
               >
                 {/* Top Race Banner */}
@@ -212,7 +212,7 @@ const Projects = () => {
                       {project.technologies && project.technologies.map((t) => (
                         <span
                           key={t}
-                          className="px-2 py-0.5 bg-white/5 border border-white/10 text-[10px] font-mono text-gray-300 rounded-2xs"
+                          className="px-2 py-0.5 bg-white/5 group-hover:border-f1Teal/30 border border-white/10 text-[10px] font-mono text-gray-300 group-hover:text-white rounded-2xs transition-colors"
                         >
                           {t}
                         </span>

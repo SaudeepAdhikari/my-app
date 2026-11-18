@@ -54,7 +54,7 @@ const ResumeDownload = () => {
             </button>
 
             <button
-              onClick={() => window.open(resumePath, '_blank')}
+              onClick={() => window.open(resumePath, '_blank', 'noopener,noreferrer')}
               className="btn-f1-outline w-full sm:w-auto"
             >
               <FaEye className="text-xs" />
